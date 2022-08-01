@@ -17,10 +17,7 @@ export async function getSearchedEmployees(context, payload) {
   try {
     const response = await axios.post('http://localhost:8080/api/search_employees', payload)
     console.log('searched employees: ', response.data)
-    // context.commit('setEmployeeDetails', response.data)
-    // for (const item of response.data) {
-    //   item.CODE = CryptoJS.AES.encrypt('uerm active employees with details', item.CODE).toString()
-    // }
+
     context.commit('setSearchedEmployees', response.data)
     context.commit('setResultForStateFilter', response.data)
     return response
