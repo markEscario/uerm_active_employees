@@ -39,6 +39,15 @@
 
   <div class="q-pa-md" v-if="resultEmployees.length >= 1">
     <q-table title="UERM Employee Details" :rows="resultEmployees" :columns="columns" row-key="name" bordered>
+      <template v-slot:body-cell-NAME="props">
+        <q-td :props="props">{{ props.row.NAME }}
+          <q-tooltip>
+            <q-avatar size="100px">
+              <img :src="'http://10.107.11.169/getpic?i=' + props.row.CODE">
+            </q-avatar>
+          </q-tooltip>
+        </q-td>
+      </template>
     </q-table>
   </div>
 
@@ -238,6 +247,13 @@ const columns = [
     format: val => `${val}`,
     sortable: true
   },
+  // {
+  //   name: 'actions',
+  //   align: 'center',
+  //   label: 'IMAGE',
+  //   field: 'actions',
+  //   sortable: false
+  // },
   {
     name: 'FIRSTNAME',
     align: 'left',
