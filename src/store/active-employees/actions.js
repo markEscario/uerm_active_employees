@@ -16,10 +16,20 @@ export async function getSearchedEmployees(context, payload) {
   console.log('search data: ', payload)
   try {
     const response = await axios.post('http://localhost:8080/api/search_employees', payload)
-    console.log('searched employees: ', response.data)
-
+    console.log('d: ', response.data)
     context.commit('setSearchedEmployees', response.data)
     context.commit('setResultForStateFilter', response.data)
+    return response
+  } catch (err) {
+    console.log(err);
+    context.commit('setSearchStatus', err)
+  }
+}
+export async function getSearchedEmployeeDetails(context, payload) {
+  console.log('search data: ', payload)
+  try {
+    const response = await axios.post('http://localhost:8080/api/search_employee_details', payload)
+    context.commit('setEmployeeDetails', response.data)
     return response
   } catch (err) {
     console.log(err);

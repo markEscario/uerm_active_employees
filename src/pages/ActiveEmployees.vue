@@ -34,7 +34,7 @@
     <div class="col-md-3 q-pa-md" v-for="resultEmployee in resultEmployees" :key="resultEmployee">
       <q-toolbar class="bg-primary text-white shadow-2">
         <q-toolbar-title>
-          {{ resultEmployee.CODE }} - {{ resultEmployee.NAME }}
+          {{ resultEmployee.EmployeeCode }} - {{ resultEmployee.NAME }}
         </q-toolbar-title>
       </q-toolbar>
 
@@ -42,7 +42,7 @@
         <q-item class="q-my-sm">
           <q-item-section avatar>
             <q-avatar size="100px">
-              <img :src="'http://10.107.11.169/getpic?i=' + resultEmployee.CODE">
+              <img :src="'http://10.107.11.169/getpic?i=' + resultEmployee.EmployeeCode">
             </q-avatar>
           </q-item-section>
           <q-item-section>
@@ -101,6 +101,7 @@
 import { defineComponent, ref } from 'vue'
 import { exportFile, useQuasar } from 'quasar'
 import { mapGetters } from 'vuex'
+import CryptoJS from 'crypto-js'
 
 export default defineComponent({
   name: 'ActiveEmployees',
@@ -141,13 +142,11 @@ export default defineComponent({
       employee_class: '',
       employee_position: '',
       employee_status: '',
-      searchStatus: '',
       title: '',
       resultCount: '',
       loading: false,
       columns,
       resultEmployees: [],
-      localFilter: [],
       rows: []
     }
   },
@@ -156,8 +155,8 @@ export default defineComponent({
     ...mapGetters({
       employees: 'activeEmployees/employees',
       pageStatus: 'activeEmployees/pageStatus',
-      searchedEmployees: 'activeEmployees/searchedEmployees',
-      resultForStateFilters: 'activeEmployees/resultForStateFilter',
+      searchStatus: 'activeEmployees/searchStatus',
+      searchedEmployees: 'activeEmployees/searchedEmployees'
     })
 
   },
@@ -189,15 +188,15 @@ export default defineComponent({
       }
 
       const result = await this.$store.dispatch('activeEmployees/getSearchedEmployees', sData)
-      setTimeout(() => {
-        this.resultEmployees = this.searchedEmployees
-        result.data.length <= 0 ? this.filterAlert = true : false
-        this.visible = false
-      }, 1000)
-
+      result.status === 200 ?
+        setTimeout(() => {
+          this.resultEmployees = this.searchedEmployees
+          result.data.length <= 0 ? this.filterAlert = true : false
+          this.visible = false
+        }, 1000)
+        : this.searchStatus
     },
     filterClass() {
-      console.log('class: ', this.employee_class)
       if (this.employee_class === '') {
         this.resultEmployees = this.searchedEmployees
       } else {

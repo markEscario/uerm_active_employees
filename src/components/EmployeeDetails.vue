@@ -19,8 +19,7 @@
             label="Department" hint="Department" />
           <q-select outlined v-model="search.employee_position" :options="positions" class="text-h6" label="Position"
             hint="Position" />
-          <q-select outlined v-model="search.employee_status" :options="employeeStatus" class="text-h6" label="Status"
-            hint="Status" />
+          <q-select outlined v-model="search.employee_status" :options="employeeStatus" label="Status" hint="Status" />
           <q-separator />
           <q-select outlined v-model="search.employee_class" :options="employeeClass" label="Class" hint="Class" />
           <div class="q-pa-sm">
@@ -39,7 +38,8 @@
   </div>
 
   <div class="q-pa-md" v-if="resultEmployees.length >= 1">
-    <q-table title="UERM Employee Details" :rows="resultEmployees" :columns="columns" row-key="name" />
+    <q-table title="UERM Employee Details" :rows="resultEmployees" :columns="columns" row-key="name" bordered>
+    </q-table>
   </div>
 
   <q-dialog v-model="filterAlert">
@@ -130,7 +130,8 @@ export default defineComponent({
       department: 'activeEmployees/department',
       positions: 'activeEmployees/positions',
       employeeStatus: 'activeEmployees/employeeStatus',
-      employeeClass: 'activeEmployees/employeeClass'
+      employeeClass: 'activeEmployees/employeeClass',
+      employeeDetails: 'activeEmployees/employeeDetails',
     })
   },
   created() {
@@ -145,21 +146,19 @@ export default defineComponent({
 
   methods: {
     async getActiveEmployees() {
-      const getEmployees = await this.$store.dispatch('activeEmployees/getActiveEmployees')
-      console.log('result: ', getEmployees.data);
+      return await this.$store.dispatch('activeEmployees/getActiveEmployees')
     },
     async getDepartment() {
-      const departmentData = await this.$store.dispatch('activeEmployees/getDepartment')
+      return await this.$store.dispatch('activeEmployees/getDepartment')
     },
     async getPositions() {
-      const positionData = await this.$store.dispatch('activeEmployees/getPositions')
+      return await this.$store.dispatch('activeEmployees/getPositions')
     },
     async getEmployeeStatus() {
-      const statusData = await this.$store.dispatch('activeEmployees/getEmployeeStatus')
+      return await this.$store.dispatch('activeEmployees/getEmployeeStatus')
     },
     async getEmployeeClass() {
-      const statusData = await this.$store.dispatch('activeEmployees/getEmployeeClass')
-      console.log('employee class: ', this.employeeClass)
+      return await this.$store.dispatch('activeEmployees/getEmployeeClass')
     },
     async submitFilter() {
       this.visible = true
@@ -180,13 +179,13 @@ export default defineComponent({
         isActive: this.search.isActive
       }
 
-      const result = await this.$store.dispatch('activeEmployees/getSearchedEmployees', sData)
+      const result = await this.$store.dispatch('activeEmployees/getSearchedEmployeeDetails', sData)
+      console.log('details', this.employeeDetails)
       setTimeout(() => {
-        this.resultEmployees = this.searchedEmployees
+        this.resultEmployees = this.employeeDetails
         result.data.length <= 0 ? this.filterAlert = true : false
         this.visible = false
       }, 1000)
-
     },
     wrapCsvValue(val, formatFn, row) {
       let formatted = formatFn !== void 0
@@ -397,7 +396,7 @@ const columns = [
     name: 'DEGREE',
     align: 'left',
     label: 'DEGREE',
-    field: 'DEGREE',
+    field: 'DiplomaDegreeHonor',
     sortable: true
   },
   {
@@ -420,7 +419,7 @@ const columns = [
     label: 'TIN',
     field: 'TIN',
     sortable: true
-  },
+  }
 ]
 
 </script>

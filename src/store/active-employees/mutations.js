@@ -32,5 +32,5 @@ export function setEmployeeClass(state, employeeClass) {
   state.employeeClass = employeeClass
 }
 export function setEmployeeDetails(state, employeeDetails) {
-  state.employeDetails = employeeDetails
+  state.employeeDetails = employeeDetails
 }
