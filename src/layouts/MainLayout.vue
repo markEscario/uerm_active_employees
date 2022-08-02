@@ -36,13 +36,13 @@ const linksList = [
   {
     title: 'Active Employees',
     caption: 'Filter Active Employees',
-    icon: 'school',
+    icon: 'face',
     link: '/active_employees'
   },
   {
     title: 'Employee Details',
     caption: 'Filter Employee Details',
-    icon: 'code',
+    icon: 'description',
     link: '/employee_details'
   }
 ]
