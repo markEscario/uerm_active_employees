@@ -15,7 +15,7 @@
         <q-separator />
         <div class="q-gutter-md row items-start s-input q-ml-sm">
           <q-select outlined v-model="search.gender" :options="employee_gender" label="Gender" hint="Gender" />
-          <q-select outlined v-model="search.employee_department" :options="department" class="text-h6"
+          <q-select outlined v-model="search.employee_department" :options="department" class="text-h5"
             label="Department" hint="Department" />
           <q-select outlined v-model="search.employee_position" :options="positions" class="text-h6" label="Position"
             hint="Position" />
