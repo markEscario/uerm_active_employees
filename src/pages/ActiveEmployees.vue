@@ -1,11 +1,16 @@
 <template>
-  {{ pageStatus }}
+  <q-banner v-if="pageStatus" inline-actions class="text-white bg-red">
+    {{ pageStatus }}
+    <template v-slot:action>
+      <q-btn flat color="white" />
+    </template>
+  </q-banner>
   <div class="q-pa-md">
     <q-inner-loading :showing="visible" class="q-mr-xl">
       <q-spinner color="primary" size="3em" />
     </q-inner-loading>
     <div class="q-pa-sm">
-      <q-form @submit="submitFilter" class="q-gutter-md" ref="form">
+      <q-form v-if="!pageStatus" @submit="submitFilter" class="q-gutter-md" ref="form">
         <div class="q-gutter-md row items-start s-input q-ml-sm">
           <q-select outlined v-model="search.campus" :options="campus" label="Campus" hint="Campus" lazy-rules
             :rules="[val => val && val.length > 0 || 'This is required']" />
@@ -34,7 +39,7 @@
     <div class="col-md-3 q-pa-md" v-for="resultEmployee in resultEmployees" :key="resultEmployee">
       <q-toolbar class="bg-primary text-white shadow-2">
         <q-toolbar-title>
-          {{ resultEmployee.EmployeeCode }} - {{ resultEmployee.NAME }}
+          <b class="text-subtitle2">{{ resultEmployee.EmployeeCode }}</b> {{ resultEmployee.NAME }}
         </q-toolbar-title>
       </q-toolbar>
 
@@ -88,7 +93,7 @@
         <div class="text-h6">UERMMMCI FILTER</div>
       </q-card-section>
       <q-card-section class="q-pt-none">
-        Sorry, No results found upon searching employees. Please try again
+        Sorry, No records found. Please try again
       </q-card-section>
       <q-card-actions align="right">
         <q-btn flat label="OK" color="primary" v-close-popup />

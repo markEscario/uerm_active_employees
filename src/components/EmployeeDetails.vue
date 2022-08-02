@@ -1,11 +1,16 @@
 <template>
-  {{ pageStatus }}
+  <q-banner v-if="pageStatus" inline-actions class="text-white bg-red">
+    {{ pageStatus }}
+    <template v-slot:action>
+      <q-btn flat color="white" />
+    </template>
+  </q-banner>
   <div class="q-pa-md">
     <q-inner-loading :showing="visible" class="q-mr-xl">
       <q-spinner color="primary" size="3em" />
     </q-inner-loading>
     <div class="q-pa-sm">
-      <q-form @submit="submitFilter" class="q-gutter-md" ref="form">
+      <q-form v-if="!pageStatus" @submit="submitFilter" class="q-gutter-md" ref="form">
         <div class="q-gutter-md row items-start s-input q-ml-sm">
           <q-input outlined v-model="search.employee_no" placeholder="Employee No." hint="Employee No." />
           <q-input outlined v-model="search.firstname" placeholder="Employee First Name" hint="First Name" />
@@ -92,7 +97,7 @@ export default defineComponent({
           value: '0'
         },
         {
-          label: 'Any',
+          label: 'ANY',
           value: ''
         }
       ]
@@ -115,7 +120,7 @@ export default defineComponent({
         isActive: ''
       },
       employee_gender: [
-        'Any',
+        'ANY',
         'MALE',
         'FEMALE'
       ],
@@ -291,7 +296,7 @@ const columns = [
   {
     name: 'BIRTHDATE',
     align: 'left',
-    label: 'BIRTHDTE',
+    label: 'BIRTHDATE',
     field: 'BDATE',
     sortable: true
   },

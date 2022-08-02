@@ -49,7 +49,7 @@
                 </div>
               </div>
               <div class="col-md-3">
-                <b>MIDDLE NAME</b>
+                <b>AGE</b>
                 <div>
                   <q-label class="n-label">{{ profile.AGE }}</q-label>
                 </div>
