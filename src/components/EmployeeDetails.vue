@@ -189,7 +189,6 @@ export default defineComponent({
       }
 
       const result = await this.$store.dispatch('activeEmployees/getSearchedEmployeeDetails', sData)
-      console.log('details', this.employeeDetails)
       setTimeout(() => {
         this.resultEmployees = this.employeeDetails
         result.data.length <= 0 ? this.filterAlert = true : false

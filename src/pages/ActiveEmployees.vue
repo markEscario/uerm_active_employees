@@ -167,7 +167,6 @@ export default defineComponent({
   methods: {
     async getActiveEmployees() {
       const getEmployees = await this.$store.dispatch('activeEmployees/getActiveEmployees')
-      console.log('result: ', getEmployees.data);
     },
     async submitFilter() {
       this.visible = true

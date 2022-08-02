@@ -1,6 +1,4 @@
 import axios from "axios";
-import CryptoJS from 'crypto-js'
-import AES from 'crypto-js/aes';
 
 export async function getActiveEmployees(context) {
   try {
@@ -13,10 +11,8 @@ export async function getActiveEmployees(context) {
   }
 }
 export async function getSearchedEmployees(context, payload) {
-  console.log('search data: ', payload)
   try {
     const response = await axios.post('http://localhost:8080/api/search_employees', payload)
-    console.log('d: ', response.data)
     context.commit('setSearchedEmployees', response.data)
     context.commit('setResultForStateFilter', response.data)
     return response
@@ -26,7 +22,6 @@ export async function getSearchedEmployees(context, payload) {
   }
 }
 export async function getSearchedEmployeeDetails(context, payload) {
-  console.log('search data: ', payload)
   try {
     const response = await axios.post('http://localhost:8080/api/search_employee_details', payload)
     context.commit('setEmployeeDetails', response.data)
