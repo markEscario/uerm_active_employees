@@ -47,6 +47,7 @@ export async function getDepartment(context, payload) {
   try {
     const response = await axios.get('http://localhost:8080/api/get_department')
     const getDept = response.data.map(element => element.description);
+    getDept.unshift('')
     context.commit('setDepartment', getDept)
     return response
 
@@ -59,6 +60,7 @@ export async function getPositions(context, payload) {
   try {
     const response = await axios.get('http://localhost:8080/api/get_positions')
     const getPosition = response.data.map(element => element.Position);
+    getPosition.unshift('')
     context.commit('setPositions', getPosition)
     return response
 
@@ -71,6 +73,7 @@ export async function getEmployeeStatus(context, payload) {
   try {
     const response = await axios.get('http://localhost:8080/api/get_employee_status')
     const getStatus = response.data.map(element => element.DESCRIPTION);
+    getStatus.unshift('')
     context.commit('setEmployeeStatus', getStatus)
     return response
 
@@ -83,7 +86,7 @@ export async function getEmployeeClass(context, payload) {
   try {
     const response = await axios.get('http://localhost:8080/api/get_employee_class')
     const getClass = response.data.map(element => element.DESCRIPTION.trim());
-    console.log('pos class: ', getClass)
+    getClass.unshift('')
     context.commit('setEmployeeClass', getClass)
     return response
 

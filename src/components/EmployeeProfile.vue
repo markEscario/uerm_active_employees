@@ -180,11 +180,8 @@
                   <q-label class="n-label">{{ moment(profile.REGULARIZED).format('MMMM d, YYYY') }}</q-label>
                 </div>
               </div>
-
             </div>
           </q-item-section>
-
-
         </q-item>
       </q-list>
     </div>

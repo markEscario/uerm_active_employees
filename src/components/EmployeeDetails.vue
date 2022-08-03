@@ -19,14 +19,14 @@
         </div>
         <q-separator />
         <div class="q-gutter-md row items-start s-input q-ml-sm">
-          <q-select outlined v-model="search.gender" :options="employee_gender" label="Gender" hint="Gender" />
-          <q-select outlined v-model="search.employee_department" :options="department" class="text-h5"
-            label="Department" hint="Department" />
-          <q-select outlined v-model="search.employee_position" :options="positions" class="text-h6" label="Position"
+          <q-select outlined v-model="search.gender" :options="employee_gender" label="ANY" hint="Gender" />
+          <q-select outlined v-model="search.employee_department" :options="department" class="text-h5" label="ANY"
+            hint="Department" />
+          <q-select outlined v-model="search.employee_position" :options="positions" class="text-h6" label="ANY"
             hint="Position" />
-          <q-select outlined v-model="search.employee_status" :options="employeeStatus" label="Status" hint="Status" />
+          <q-select outlined v-model="search.employee_status" :options="employeeStatus" label="ANY" hint="Status" />
           <q-separator />
-          <q-select outlined v-model="search.employee_class" :options="employeeClass" label="Class" hint="Class" />
+          <q-select outlined v-model="search.employee_class" :options="employeeClass" label="ANY" hint="Class" />
           <div class="q-pa-sm">
             Active Employees
             <q-option-group name="preferred_genre" v-model="search.isActive" :options="activeEmp" color="primary"
@@ -120,7 +120,7 @@ export default defineComponent({
         isActive: ''
       },
       employee_gender: [
-        'ANY',
+        ' ',
         'MALE',
         'FEMALE'
       ],
@@ -251,18 +251,18 @@ const columns = [
     format: val => `${val}`,
     sortable: true
   },
-  // {
-  //   name: 'actions',
-  //   align: 'center',
-  //   label: 'IMAGE',
-  //   field: 'actions',
-  //   sortable: false
-  // },
   {
     name: 'FIRSTNAME',
     align: 'left',
     label: 'FIRSTNAME',
     field: 'FIRSTNAME',
+    sortable: true
+  },
+  {
+    name: 'MIDDLENAME',
+    align: 'left',
+    label: 'MIDDLENAME',
+    field: 'MIDDLENAME',
     sortable: true
   },
   {
