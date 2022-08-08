@@ -23,6 +23,7 @@
         <q-btn class="q-mr-md s-btn" label="Submit" type="submit" color="primary" />
       </q-form>
     </div>
+    <q-separator />
   </div>
   <div class="q-ml-lg q-pa-md" v-if="resultEmployees.length >= 1">Filter: <b>{{ resultEmployees.length
   }}</b>

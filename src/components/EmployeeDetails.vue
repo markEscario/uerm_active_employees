@@ -6,9 +6,6 @@
     </template>
   </q-banner>
   <div class="q-pa-md">
-    <q-inner-loading :showing="visible" class="q-mr-xl">
-      <q-spinner color="primary" size="3em" />
-    </q-inner-loading>
     <div class="q-pa-sm">
       <q-form v-if="!pageStatus" @submit="submitFilter" class="q-gutter-md" ref="form">
         <div class="q-gutter-md row items-start s-input q-ml-sm">
@@ -36,7 +33,9 @@
         <q-btn class="q-mr-md s-btn" label="Submit" type="submit" color="primary" />
       </q-form>
     </div>
+    <q-separator />
   </div>
+
   <div class="q-ml-lg q-pa-md" v-if="resultEmployees.length >= 1">Filter: <b>{{ resultEmployees.length
   }}</b>
     <q-btn class="q-ml-lg" color="primary" icon-right="archive" label="Export to Excel" no-caps @click="exportTable" />
@@ -55,7 +54,9 @@
       </template>
     </q-table>
   </div>
-
+  <q-inner-loading :showing="visible" class="q-mr-xl">
+    <q-spinner color="primary" size="3em" />
+  </q-inner-loading>
   <q-dialog v-model="filterAlert">
     <q-card>
       <q-card-section>
