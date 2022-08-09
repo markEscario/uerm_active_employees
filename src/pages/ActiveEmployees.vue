@@ -179,7 +179,7 @@ export default defineComponent({
       this.resultEmployees = ''
       let sData = {
         employee_type: this.search.employee_type,
-        campus: this.search.campus === 'UE Caloocan' ? '0' : this.search.campus === 'UE Manila' ? '1' : '2',
+        campus: this.search.campus === 'UE Caloocan' ? '1' : this.search.campus === 'UE Manila' ? '0' : '2',
         employee_no: this.search.employee_no,
         firstname: this.search.firstname,
         lastname: this.search.lastname,
@@ -205,28 +205,40 @@ export default defineComponent({
       if (this.employee_class === '') {
         this.resultEmployees = this.searchedEmployees
       } else {
-        this.resultEmployees = this.resultEmployees.filter(resultEmployee => typeof resultEmployee.EMP_CLASS_DESC === 'string' ? resultEmployee.EMP_CLASS_DESC.toLowerCase().includes(this.employee_class.toLowerCase()) : '')
+        this.resultEmployees = this.resultEmployees
+          .filter(resultEmployee => typeof resultEmployee.EMP_CLASS_DESC === 'string' ?
+            resultEmployee.EMP_CLASS_DESC.toLowerCase().includes(this.employee_class.toLowerCase()) :
+            this.resultEmployees = this.searchedEmployee)
       }
     },
     filterDepartment() {
       if (this.department === '') {
         this.resultEmployees = this.searchedEmployees
       } else {
-        this.resultEmployees = this.resultEmployees.filter(resultEmployee => typeof resultEmployee.DEPT_DESC === 'string' ? resultEmployee.DEPT_DESC.toLowerCase().includes(this.department.toLowerCase()) : '')
+        this.resultEmployees = this.resultEmployees
+          .filter(resultEmployee => typeof resultEmployee.DEPT_DESC === 'string' ?
+            resultEmployee.DEPT_DESC.toLowerCase().includes(this.department.toLowerCase()) :
+            this.resultEmployees = this.searchedEmployees)
       }
     },
     filterPosition() {
       if (this.employee_position === '') {
         this.resultEmployees = this.searchedEmployees
       } else {
-        this.resultEmployees = this.resultEmployees.filter(resultEmployee => typeof resultEmployee.POS_DESC === 'string' ? resultEmployee.POS_DESC.toLowerCase().includes(this.employee_position.toLowerCase()) : '')
+        this.resultEmployees = this.resultEmployees
+          .filter(resultEmployee => typeof resultEmployee.POS_DESC === 'string' ?
+            resultEmployee.POS_DESC.toLowerCase().includes(this.employee_position.toLowerCase()) :
+            this.resultEmployees = this.searchedEmployee)
       }
     },
     filterStatus() {
       if (this.employee_status === '') {
         this.resultEmployees = this.searchedEmployees
       } else {
-        this.resultEmployees = this.resultEmployees.filter(resultEmployee => typeof resultEmployee.EMP_STATUS_DESC === 'string' ? resultEmployee.EMP_STATUS_DESC.toLowerCase().includes(this.employee_status.toLowerCase()) : '')
+        this.resultEmployees = this.resultEmployees
+          .filter(resultEmployee => typeof resultEmployee.EMP_STATUS_DESC === 'string' ?
+            resultEmployee.EMP_STATUS_DESC.toLowerCase().includes(this.employee_status.toLowerCase()) :
+            this.resultEmployees = this.searchedEmployee)
       }
     },
     wrapCsvValue(val, formatFn, row) {
@@ -242,7 +254,6 @@ export default defineComponent({
       return `"${formatted}"`
     },
     exportTable() {
-      // naive encoding to csv format
       const content = [columns.map(col => this.wrapCsvValue(col.label))].concat(
         this.searchedEmployees.map(row => columns.map(col => this.wrapCsvValue(
           typeof col.field === 'function'
