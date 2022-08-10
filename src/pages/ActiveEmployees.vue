@@ -338,4 +338,8 @@ const columns = [
 .code-label {
   font-size: 14px;
 }
+
+img {
+  -webkit-user-drag: none;
+}
 </style>
