@@ -1,0 +1,232 @@
+<template>
+  <q-dialog v-if="fModal" :model-value="true">
+    <q-card style="width: 1200px; max-width: 180vw;">
+      <div class="row flex flex-center">
+        <div class="q-pa-md" style="width: 1950px">
+          <q-toolbar class="bg-primary text-white shadow-2">
+            <q-toolbar-title>
+              <q-icon name="account_circle" size="30px"></q-icon> {{ vData.CODE + ' - ' + vData.NAME }}
+            </q-toolbar-title>
+          </q-toolbar>
+          <q-list bordered>
+            <q-item class="q-my-sm">
+
+              <q-avatar size="190px">
+                <img :src="'http://10.107.11.169/getpic?i=' + vData.CODE">
+              </q-avatar>
+
+              <q-item-section class="q-ml-md">
+                <div class="row bg-grey-2 q-pa-sm rounded-borders row-pad">
+                  <div class="col-md-3">
+                    <b>FIRST NAME</b>
+                    <div>
+                      <q-label class="n-label">{{ vData.FIRSTNAME }}</q-label>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <b>MIDDLE NAME</b>
+                    <div>
+                      <q-label class="n-label">{{ vData.MIDDLENAME }}</q-label>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <b>LAST NAME</b>
+                    <div>
+                      <q-label class="n-label">{{ vData.LASTNAME }}</q-label>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <b>GENDER</b>
+                    <div>
+                      <q-label class="n-label">{{ vData.GENDER === 'M' ? 'MALE' : 'FEMALE' }}</q-label>
+                    </div>
+                  </div>
+                </div>
+                <div class="row bg-grey-2 q-pa-sm rounded-borders row-pad">
+                  <div class="col-md-3">
+                    <b>BIRTH DATE</b>
+                    <div>
+                      <q-label class="n-label">{{ moment(vData.BDATE).format('MMMM d, YYYY') }}</q-label>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <b>AGE</b>
+                    <div>
+                      <q-label class="n-label">{{ vData.AGE }}</q-label>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <b>CITIZENSHIP</b>
+                    <div>
+                      <q-label class="n-label">{{ vData.CITIZEN_DESC }}</q-label>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <b>RELIGION</b>
+                    <div>
+                      <q-label class="n-label">{{ vData.RELIGION_DESC }}</q-label>
+                    </div>
+                  </div>
+
+                </div>
+                <q-separator />
+                <div class="row bg-grey-2 q-pa-sm rounded-borders">
+                  <div class="col-md-3">
+                    <b>EMAIL</b>
+                    <div>
+                      <q-label class="n-label">{{ vData.EMAIL }}</q-label>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <b>MIDDLE NAME</b>
+                    <div>
+                      <q-label class="n-label">{{ vData.MIDDLENAME }}</q-label>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <b>ADDRESS</b>
+                    <div>
+                      <q-label class="n-label">{{ vData.ADDRESS }}</q-label>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <b>MOBILE NO.</b>
+                    <div>
+                      <q-label class="n-label">{{ vData.MOBILENO }}</q-label>
+                    </div>
+                  </div>
+                </div>
+
+                <q-separator />
+
+                <div class="row bg-grey-2 q-pa-sm rounded-borders">
+                  <div class="col-md-3">
+                    <b>DEPARTMENT</b>
+                    <div>
+                      <q-label class="n-label">{{ vData.DEPT_DESC }}</q-label>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <b>POSITION</b>
+                    <div>
+                      <q-label class="n-label">{{ vData.POS_DESC }}</q-label>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <b>HIRED</b>
+                    <div>
+                      <q-label class="n-label">{{ moment(vData.HIRED).format('MMMM d, YYYY') }}</q-label>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <b>REGULARIZED</b>
+                    <div>
+                      <q-label class="n-label">{{ moment(vData.REGULARIZED).format('MMMM d, YYYY') }}</q-label>
+                    </div>
+                  </div>
+                </div>
+                <q-separator />
+                <div class="row bg-grey-2 q-pa-sm rounded-borders">
+                  <div class="col-md-3">
+                    <b>EMPLOYEE CLASS</b>
+                    <div>
+                      <q-label class="n-label">{{ vData.DEPT_DESC }}</q-label>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <b>EMPLOYEE STATUS</b>
+                    <div>
+                      <q-label class="n-label">{{ vData.POS_DESC }}</q-label>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <b>SERVICE YEARS</b>
+                    <div>
+                      <q-label class="n-label">{{ vData['SERVICE YEARS'] }}</q-label>
+                    </div>
+                  </div>
+                </div>
+              </q-item-section>
+
+            </q-item>
+
+            <q-separator />
+            <q-item-label header>SERVICE RECORD</q-item-label>
+            <q-item-label class="q-ml-md">{{ vData.EMP_STATUS_DESC === 'PROBY' ? 'PROBATIONARY' : '' }}</q-item-label>
+            <q-item class="q-mb-sm">
+
+              <q-item-section>
+                <div class="row bg-grey-2 q-pa-sm rounded-borders row-pad">
+                  <div class="col-md-3">
+                    <b>POSITION</b>
+                    <div>
+                      <q-label class="n-label">{{ vData.POS_DESC }}</q-label>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <b>DEPARTMENT</b>
+                    <div>
+                      <q-label class="n-label">{{ vData.DEPT_DESC }}</q-label>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <b>FROM</b>
+                    <div>
+                      <q-label class="n-label">{{ moment(vData.HIRED).format('MMMM d, YYYY') }}</q-label>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <b>TO</b>
+                    <div>
+                      <q-label class="n-label">{{ moment(vData.REGULARIZED).format('MMMM d, YYYY') }}</q-label>
+                    </div>
+                  </div>
+                </div>
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </div>
+      </div>
+      <q-card-actions align="right" class="bg-white text-teal">
+        <q-btn flat label="Close" @click="close" v-close-popup />
+      </q-card-actions>
+    </q-card>
+  </q-dialog>
+</template>
+<script>
+import { defineComponent, ref } from 'vue'
+import moment from 'moment'
+import { date } from 'quasar'
+
+export default defineComponent({
+  name: 'ViewEmployeeModal',
+  data() {
+    return {
+      moment: moment,
+      resultEmps: {},
+    }
+  },
+  props: ['vData', 'fModal'],
+
+  methods: {
+    close() {
+      this.$emit('close')
+    }
+  }
+
+})
+
+</script>
+<style scoped>
+.n-label {
+  margin-top: -12px;
+}
+
+.row-pad {
+  margin-top: -6px;
+}
+
+img {
+  -webkit-user-drag: none;
+}
+</style>

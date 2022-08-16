@@ -215,7 +215,7 @@ export default defineComponent({
     },
     exportTable() {
       const content = [columns.map(col => this.wrapCsvValue(col.label))].concat(
-        this.searchedEmployees.map(row => columns.map(col => this.wrapCsvValue(
+        this.resultEmployees.map(row => columns.map(col => this.wrapCsvValue(
           typeof col.field === 'function'
             ? col.field(row)
             : row[col.field === void 0 ? col.name : col.field],
@@ -248,7 +248,7 @@ const columns = [
     required: true,
     label: 'CODE',
     align: 'left',
-    field: 'CODE',
+    field: 'EmployeeCode',
     format: val => `${val}`,
     sortable: true
   },

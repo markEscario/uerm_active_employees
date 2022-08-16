@@ -1,7 +1,7 @@
 export default function () {
   return {
     //
-    apiURL: 'http://localhost:8080/api',
+    apiUrl: 'http://localhost:3000/api',
     visible: false,
     pageStatus: '',
     searchStatus: '',

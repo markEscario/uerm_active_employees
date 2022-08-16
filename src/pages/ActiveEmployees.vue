@@ -5,29 +5,23 @@
       <q-btn flat color="white" />
     </template>
   </q-banner>
+  <ViewEmployeeModal :fModal="medium" :vData="resultEmps" @close="closeDialog" @hide="closeDialog" />
   <div class="q-pa-md">
-    <q-inner-loading :showing="visible" class="q-mr-xl">
-      <q-spinner color="primary" size="3em" />
-    </q-inner-loading>
     <div class="q-pa-sm">
       <q-form v-if="!pageStatus" @submit="submitFilter" class="q-gutter-md" ref="form">
         <div class="q-gutter-md row items-start s-input q-ml-sm">
-          <q-select outlined v-model="search.campus" :options="campus" label="Campus" hint="Campus" lazy-rules
-            :rules="[val => val && val.length > 0 || 'This is required']" />
-          <q-input outlined v-model="search.employee_no" placeholder="Employee No." hint="Employee No." />
-          <q-input outlined v-model="search.firstname" placeholder="Employee First Name" hint="First Name" />
-          <q-input outlined v-model="search.lastname" placeholder="Employee Last Name" hint="Last Name" />
-          <q-input outlined v-model="search.middlename" placeholder="Middle Name" hint="Middle Name" />
+          <q-input class="text-h6" outlined v-model="search.filterData" placeholder="Search" dense
+            hint="Ex. Employee No / Last Name / First Name / Department / Position" lazy-rules
+            :rules="[val => val && val.length > 0 || 'This is required']" debounce="300" />
         </div>
         <br>
-        <q-btn class="q-mr-md s-btn" label="Submit" type="submit" color="primary" />
+        <q-btn class="q-mr-md s-btn" label="Submit" type="submit" color="primary" :disable="disabled" />
       </q-form>
     </div>
     <q-separator />
   </div>
-  <div class="q-ml-lg q-pa-md" v-if="resultEmployees.length >= 1">Filter: <b>{{ resultEmployees.length
+  <div class="q-ml-lg q-pa-md" v-if="searchedEmployees.length >= 5">Filter: <b>{{ searchedEmployees.length
   }}</b>
-    <q-btn class="q-ml-lg" color="primary" icon-right="archive" label="Export to Excel" no-caps @click="exportTable" />
     <div class="q-gutter-md row items-start s-input">
       <q-input outlined placeholder="Employee Class" v-model="employee_class" @keyup="filterClass" />
       <q-input outlined placeholder="Department" v-model="department" @keyup="filterDepartment" />
@@ -37,10 +31,10 @@
   </div>
 
   <div class="row" style="width: 1400px;">
-    <div class="col-md-3 q-pa-md" v-for="resultEmployee in resultEmployees" :key="resultEmployee">
+    <div class="col-md-3 q-pa-lg" v-for="resultEmployee in paginateEmployees" :key="resultEmployee">
       <q-toolbar class="bg-primary text-white shadow-2">
         <q-toolbar-title>
-          <b class="text-subtitle2">{{ resultEmployee.EmployeeCode }}</b> {{ resultEmployee.NAME }}
+          <b class="text-subtitle2">{{ resultEmployee.CODE }}</b> {{ resultEmployee.NAME }}
         </q-toolbar-title>
       </q-toolbar>
 
@@ -48,38 +42,36 @@
         <q-item class="q-my-sm">
           <q-item-section avatar>
             <q-avatar size="100px">
-              <img :src="'http://10.107.11.169/getpic?i=' + resultEmployee.EmployeeCode">
+              <img :src="'http://10.107.11.169/getpic?i=' + resultEmployee.CODE">
             </q-avatar>
           </q-item-section>
           <q-item-section>
-            <q-item-label class="dept-label"><b>{{ resultEmployee.DEPT_DESC }}</b></q-item-label>
-            <q-item-label>{{ resultEmployee.POS_DESC }}</q-item-label>
-            <q-item-label>{{ resultEmployee.EMP_CLASS_CODE + ' ' + resultEmployee.EMP_STATUS_DESC }}</q-item-label>
+            <q-item-label class="dept-label text-uppercase text-subtitle2 bg-lime-3"><b>{{ resultEmployee.POS_DESC
+            }}</b>
+            </q-item-label>
+            <q-item-label class="text-caption">{{ resultEmployee.DEPT_DESC }}</q-item-label>
+            <q-item-label class="text-caption">{{ resultEmployee.EMP_CLASS_CODE + ' ' + resultEmployee.EMP_STATUS_DESC
+            }}</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item v-if="resultEmployee.IS_ACTIVE" clickable v-ripple :active="active"
-          active-class="bg-teal-1 text-grey-8">
+        <q-item v-if="resultEmployee.IS_ACTIVE" :active="active" active-class="bg-teal-1 text-grey-8">
           <q-item-section avatar>
             <q-icon v-if="resultEmployee.GENDER === 'M'" name="face_6" />
             <q-icon v-else name="face_3" />
           </q-item-section>
           <q-item-section>
-            <router-link :to="'/active_employees/profile/' + resultEmployee.CODE" style="text-decoration: none;"
-              target="_blank">View
-              Profile</router-link>
+            <q-btn flat rounded color="primary" label="PROFILE" @click="viewProfile(resultEmployee)" />
           </q-item-section>
           <q-item-section side>{{ resultEmployee.IS_ACTIVE ? 'ACTIVE' : 'IN-ACTIVE'
           }}</q-item-section>
         </q-item>
-        <q-item v-else clickable v-ripple :active="active" active-class="bg-red-2 text-grey-8">
+        <q-item v-else :active="active" active-class="bg-red-2 text-grey-8">
           <q-item-section avatar>
             <q-icon v-if="resultEmployee.GENDER === 'M'" name="face_6" />
             <q-icon v-else name="face_3" />
           </q-item-section>
           <q-item-section>
-            <router-link :to="'/active_employees/profile/' + resultEmployee.CODE" style="text-decoration: none;"
-              target="_blank">View
-              Profile</router-link>
+            <q-btn flat rounded color="primary" label="PROFILE" />
           </q-item-section>
           <q-item-section side>{{ resultEmployee.IS_ACTIVE ? 'ACTIVE' : 'IN-ACTIVE'
           }}</q-item-section>
@@ -87,7 +79,9 @@
       </q-list>
     </div>
   </div>
-
+  <q-inner-loading :showing="visible" class="q-mr-xl">
+    <q-spinner color="primary" size="8em" />
+  </q-inner-loading>
   <q-dialog v-model="filterAlert">
     <q-card>
       <q-card-section>
@@ -101,16 +95,23 @@
       </q-card-actions>
     </q-card>
   </q-dialog>
+  <div v-if="searchedEmployees.length >= 5" class="q-pa-lg flex flex-center">
+    <q-pagination v-model="page" :min="currentPage" :max="Math.ceil(resultEmployees.length / totalPages)" :input="true"
+      input-class="text-orange-10" />
+  </div>
 </template>
 
 <script>
 import { defineComponent, ref } from 'vue'
-import { exportFile, useQuasar } from 'quasar'
+import { useQuasar } from 'quasar'
 import { mapGetters } from 'vuex'
-import CryptoJS from 'crypto-js'
+import ViewEmployeeModal from '../components/ViewEmployeeModal.vue'
 
 export default defineComponent({
   name: 'ActiveEmployees',
+  components: {
+    ViewEmployeeModal
+  },
   setup() {
     const $q = useQuasar()
     return {
@@ -123,26 +124,15 @@ export default defineComponent({
   },
   data() {
     return {
-      search: {
-        employee_type: '',
-        campus: '',
-        employee_no: '',
-        firstname: '',
-        lastname: '',
-        middlename: '',
-        employee_status: '',
-        employee_department: '',
-        gender: '',
-        employee_position: '',
-        employee_class: '',
-        isActive: ''
-      },
       campus: [
         '',
         'UE Caloocan',
         'UE Manila',
         'UERM'
       ],
+      search: {
+        filterData: '',
+      },
       filterAlert: false,
       department: '',
       employee_class: '',
@@ -151,9 +141,14 @@ export default defineComponent({
       title: '',
       resultCount: '',
       loading: false,
-      columns,
       resultEmployees: [],
-      rows: []
+      resultEmps: {},
+      disabled: false,
+      medium: false,
+      page: 1,
+      currentPage: 1,
+      nextPage: null,
+      totalPages: 8,
     }
   },
 
@@ -163,44 +158,42 @@ export default defineComponent({
       pageStatus: 'activeEmployees/pageStatus',
       searchStatus: 'activeEmployees/searchStatus',
       searchedEmployees: 'activeEmployees/searchedEmployees'
-    })
+    }),
+    paginateEmployees() {
+      return this.resultEmployees.slice((this.page - 1) * this.totalPages, (this.page - 1) * this.totalPages + this.totalPages)
+    }
 
   },
-  mounted() {
-    this.getActiveEmployees()
-  },
-
   methods: {
-    async getActiveEmployees() {
-      const getEmployees = await this.$store.dispatch('activeEmployees/getActiveEmployees')
-    },
     async submitFilter() {
+      this.disabled = true
       this.visible = true
       this.resultEmployees = ''
-      let sData = {
-        employee_type: this.search.employee_type,
-        campus: this.search.campus === 'UE Caloocan' ? '1' : this.search.campus === 'UE Manila' ? '0' : '2',
-        employee_no: this.search.employee_no,
-        firstname: this.search.firstname,
-        lastname: this.search.lastname,
-        middlename: this.search.middlename,
-        gender: this.search.gender,
-        employee_department: this.search.employee_department,
-        employee_position: this.search.employee_position,
-        employee_status: this.search.employee_status,
-        employee_class: this.search.employee_class,
-        isActive: this.search.isActive
+      let data = {
+        filterData: this.search.filterData,
       }
-
-      const result = await this.$store.dispatch('activeEmployees/getSearchedEmployees', sData)
+      console.log('search: ', data.filterData)
+      const result = await this.$store.dispatch('activeEmployees/getSearchedEmployees', data)
       result.status === 200 ?
         setTimeout(() => {
+          this.disabled = false
+
           this.resultEmployees = this.searchedEmployees
-          result.data.length <= 0 ? this.filterAlert = true : false
+          result.data.length <= null ? this.filterAlert = true : false
           this.visible = false
         }, 1000)
         : this.searchStatus
     },
+
+    viewProfile(profile) {
+      this.medium = true;
+      this.resultEmps = profile
+    },
+
+    closeDialog() {
+      this.medium = false
+    },
+
     filterClass() {
       if (this.employee_class === '') {
         this.resultEmployees = this.searchedEmployees
@@ -211,6 +204,7 @@ export default defineComponent({
             this.resultEmployees = this.searchedEmployee)
       }
     },
+
     filterDepartment() {
       if (this.department === '') {
         this.resultEmployees = this.searchedEmployees
@@ -221,6 +215,7 @@ export default defineComponent({
             this.resultEmployees = this.searchedEmployees)
       }
     },
+
     filterPosition() {
       if (this.employee_position === '') {
         this.resultEmployees = this.searchedEmployees
@@ -231,6 +226,7 @@ export default defineComponent({
             this.resultEmployees = this.searchedEmployee)
       }
     },
+
     filterStatus() {
       if (this.employee_status === '') {
         this.resultEmployees = this.searchedEmployees
@@ -241,79 +237,9 @@ export default defineComponent({
             this.resultEmployees = this.searchedEmployee)
       }
     },
-    wrapCsvValue(val, formatFn, row) {
-      let formatted = formatFn !== void 0
-        ? formatFn(val, row)
-        : val
-
-      formatted = formatted === void 0 || formatted === null
-        ? ''
-        : String(formatted)
-
-      formatted = formatted.split('"').join('""')
-      return `"${formatted}"`
-    },
-    exportTable() {
-      const content = [columns.map(col => this.wrapCsvValue(col.label))].concat(
-        this.searchedEmployees.map(row => columns.map(col => this.wrapCsvValue(
-          typeof col.field === 'function'
-            ? col.field(row)
-            : row[col.field === void 0 ? col.name : col.field],
-          col.format,
-          row
-        )).join(','))
-      ).join('\r\n')
-
-      const status = exportFile(
-        'table-export.csv',
-        content,
-        'text/csv'
-      )
-
-      if (status !== true) {
-        $q.notify({
-          message: 'Browser denied file download...',
-          color: 'negative',
-          icon: 'warning'
-        })
-      }
-    }
 
   }
 })
-
-const columns = [
-  {
-    name: 'CODE',
-    required: true,
-    label: 'CODE',
-    align: 'left',
-    field: 'CODE',
-    format: val => `${val}`,
-    sortable: true
-  },
-  {
-    name: 'NAME',
-    align: 'left',
-    label: 'NAME',
-    field: 'NAME',
-    sortable: true
-  },
-  {
-    name: 'DEPARTMENT',
-    align: 'left',
-    label: 'DEPARTMENT',
-    field: 'DEPARTMENT',
-    sortable: true
-  },
-  {
-    name: 'ACTIVE',
-    align: 'left',
-    label: 'ACTIVE',
-    field: 'IS_ACTIVE',
-    sortable: true
-  }
-]
 
 </script>
 <style scoped>
@@ -332,7 +258,7 @@ const columns = [
 
 .dept-label {
   font-size: 12px;
-  margin-top: -50px;
+  margin-top: -34px;
 }
 
 .code-label {

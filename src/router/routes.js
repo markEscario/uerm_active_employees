@@ -10,8 +10,6 @@ const routes = [
     ]
   },
 
-  { path: '/active_employees/profile/:id', component: () => import('components/EmployeeProfile.vue') },
-
   // Always leave this as last one,
   // but you can also remove it
   {

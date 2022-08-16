@@ -223,7 +223,6 @@ export default defineComponent({
   }
 })
 
-
 </script>
 <style scoped>
 .n-label {
@@ -232,5 +231,9 @@ export default defineComponent({
 
 .row-pad {
   margin-top: -6px;
+}
+
+img {
+  -webkit-user-drag: none;
 }
 </style>
