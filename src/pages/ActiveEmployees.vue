@@ -6,6 +6,8 @@
     </template>
   </q-banner>
   <ViewEmployeeModal :fModal="medium" :vData="resultEmps" @close="closeDialog" @hide="closeDialog" />
+  <ViewEmployeeTableModal :tableModal="table_modal" :employeeTable="resultEmployees" @close="closeDialog"
+    @hide="closeDialog" />
   <div class="q-pa-md">
     <div class="q-pa-sm">
       <q-form v-if="!pageStatus" @submit="submitFilter" class="q-gutter-md" ref="form">
@@ -23,7 +25,7 @@
 
   <div class="q-ml-lg q-pa-md" v-if="searchedEmployees.length >= 1">Filter Count: <b>{{ searchedEmployees.length
   }}
-      <q-btn to="/employee_details" class="q-ml-lg" color="primary" label="Tabular View" />
+      <q-btn class="q-ml-lg" color="primary" label="Tabular View" @click="viewTableModal" />
     </b>
     <div class="q-gutter-md row items-start s-input">
       <q-input outlined placeholder="Employee Class" v-model="employee_class" @keyup="filterClass" dense />
@@ -102,6 +104,7 @@
     <q-pagination v-model="page" :min="currentPage" :max="Math.ceil(resultEmployees.length / totalPages)" :input="true"
       input-class="text-orange-10" size="2em" />
   </div>
+  <router-view />
 </template>
 
 <script>
@@ -109,11 +112,14 @@ import { defineComponent, ref } from 'vue'
 import { useQuasar } from 'quasar'
 import { mapGetters } from 'vuex'
 import ViewEmployeeModal from '../components/ViewEmployeeModal.vue'
+import ViewEmployeeTableModal from '../components/ViewEmployeeTableModal.vue'
+
 
 export default defineComponent({
   name: 'ActiveEmployees',
   components: {
     ViewEmployeeModal,
+    ViewEmployeeTableModal
   },
   setup() {
     const $q = useQuasar()
@@ -148,6 +154,7 @@ export default defineComponent({
       resultEmps: {},
       disabled: false,
       medium: false,
+      table_modal: false,
       page: 1,
       currentPage: 1,
       nextPage: null,
@@ -192,8 +199,13 @@ export default defineComponent({
       this.resultEmps = profile
     },
 
+    viewTableModal() {
+      this.table_modal = true;
+    },
+
     closeDialog() {
       this.medium = false
+      this.table_modal = false
     },
 
     filterClass() {

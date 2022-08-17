@@ -5,7 +5,7 @@ import { date } from 'quasar'
 export async function getSearchedEmployees(context, payload) {
   try {
     const response = await axios.get(`${this.state.activeEmployees.apiUrl}/search_employees?searchData=${payload.filterData}`)
-    let activeEmployees = response.data.filter(activeEmployee => activeEmployee.IS_ACTIVE)
+    let activeEmployees = response.data.filter(activeEmployee => activeEmployee.IS_ACTIVE && activeEmployee.EducType === 'G')
     for (const item of activeEmployees) {
       const dateToday = new Date().toISOString().slice(0, 10);
       const unit = 'years'

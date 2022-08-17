@@ -207,10 +207,6 @@ export default defineComponent({
   },
   props: ['vData', 'fModal'],
 
-  crated() {
-    this.seedate()
-  },
-
   methods: {
     close() {
       this.$emit('close')

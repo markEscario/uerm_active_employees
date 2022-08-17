@@ -1,59 +1,42 @@
 <template>
-  <q-banner v-if="pageStatus" inline-actions class="text-white bg-red">
-    {{ pageStatus }}
-    <template v-slot:action>
-      <q-btn flat color="white" />
-    </template>
-  </q-banner>
-  <div class="q-pa-md">
-    <div class="q-pa-sm">
-      <q-btn to="/" class="q-mr-md s-btn" label="Back" color="primary" />
-    </div>
-    <q-separator />
-  </div>
+  <q-dialog v-if="tableModal" :model-value="true">
+    <q-card style="width: 1200px; max-width: 180vw;">
+      <div class="q-ml-lg q-pa-md" v-if="employeeTable.length >= 1">Filter: <b>{{ employeeTable.length
+      }}</b>
+        <q-btn class="q-ml-lg" color="primary" icon-right="archive" label="Export to Excel" no-caps
+          @click="exportTable" />
+      </div>
 
-  <div class="q-ml-lg q-pa-md" v-if="resultEmployees.length >= 1">Filter: <b>{{ resultEmployees.length
-  }}</b>
-    <q-btn class="q-ml-lg" color="primary" icon-right="archive" label="Export to Excel" no-caps @click="exportTable" />
-  </div>
-
-  <div class="q-pa-md" v-if="resultEmployees.length >= 1">
-    <q-table title="UERM Employee Details" :rows="resultEmployees" :columns="columns" :filter="filter" row-key="name"
-      bordered>
-      <template v-slot:top-right>
-        <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
-          <template v-slot:append>
-            <q-icon name="search" />
+      <div class="q-pa-md" v-if="employeeTable.length >= 1">
+        <q-table title="UERM Employee Details" :rows="employeeTable" :columns="columns" :filter="filter" row-key="name"
+          bordered>
+          <template v-slot:top-right>
+            <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
+              <template v-slot:append>
+                <q-icon name="search" />
+              </template>
+            </q-input>
           </template>
-        </q-input>
-      </template>
-      <template v-slot:body-cell-NAME="props">
-        <q-td :props="props">{{ props.row.NAME }}
-          <q-tooltip>
-            <q-avatar size="100px">
-              <img :src="'http://10.107.11.169/getpic?i=' + props.row.CODE">
-            </q-avatar>
-          </q-tooltip>
-        </q-td>
-      </template>
-    </q-table>
-  </div>
-  <q-inner-loading :showing="visible" class="q-mr-xl">
-    <q-spinner color="primary" size="8em" />
-  </q-inner-loading>
-  <q-dialog v-model="filterAlert">
-    <q-card>
-      <q-card-section>
-        <div class="text-h6">UERMMMCI FILTER</div>
-      </q-card-section>
-      <q-card-section class="q-pt-none">
-        Sorry, No results found. Please try again
-      </q-card-section>
-      <q-card-actions align="right">
-        <q-btn flat label="OK" color="primary" v-close-popup />
+          <template v-slot:body-cell-NAME="props">
+            <q-td :props="props">{{ props.row.NAME }}
+              <q-tooltip>
+                <q-avatar size="100px">
+                  <img :src="'http://10.107.11.169/getpic?i=' + props.row.CODE">
+                </q-avatar>
+              </q-tooltip>
+            </q-td>
+          </template>
+        </q-table>
+
+      </div>
+
+      <q-card-actions align="right" class="bg-white text-teal">
+        <q-btn flat label="Close" @click="close" v-close-popup />
       </q-card-actions>
     </q-card>
+
   </q-dialog>
+
 </template>
 
 <script>
@@ -110,11 +93,11 @@ export default defineComponent({
       resultCount: '',
       loading: false,
       columns,
-      resultEmployees: [],
+      // employeeTable: [],
       rows: []
     }
   },
-
+  props: ['employeeTable', 'tableModal'],
   computed: {
     ...mapGetters({
       employees: 'activeEmployees/employees',
@@ -128,13 +111,11 @@ export default defineComponent({
       employeeDetails: 'activeEmployees/employeeDetails',
     })
   },
-  created() {
-    this.getDetails()
-  },
 
   methods: {
-    async getDetails() {
-      this.resultEmployees = this.searchedEmployees
+
+    close() {
+      this.$emit('close')
     },
 
     wrapCsvValue(val, formatFn, row) {
@@ -151,7 +132,7 @@ export default defineComponent({
     },
     exportTable() {
       const content = [columns.map(col => this.wrapCsvValue(col.label))].concat(
-        this.resultEmployees.map(row => columns.map(col => this.wrapCsvValue(
+        this.employeeTable.map(row => columns.map(col => this.wrapCsvValue(
           typeof col.field === 'function'
             ? col.field(row)
             : row[col.field === void 0 ? col.name : col.field],
@@ -270,6 +251,13 @@ const columns = [
     align: 'left',
     label: 'MOBILE NO.',
     field: 'MOBILENO',
+    sortable: true
+  },
+  {
+    name: 'RELIGION',
+    align: 'left',
+    label: 'RELIGION',
+    field: 'RELIGION_DESC',
     sortable: true
   },
   {
