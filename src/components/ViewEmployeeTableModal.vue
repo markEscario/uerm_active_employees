@@ -1,6 +1,6 @@
 <template>
   <q-dialog v-if="tableModal" :model-value="true">
-    <q-card style="width: 1200px; max-width: 180vw;">
+    <q-card style="width: 1800px; max-width: 380vw;">
       <div class="q-ml-lg q-pa-md" v-if="employeeTable.length >= 1">Filter: <b>{{ employeeTable.length
       }}</b>
         <q-btn class="q-ml-lg" color="primary" icon-right="archive" label="Export to Excel" no-caps
