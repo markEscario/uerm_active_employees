@@ -14,7 +14,15 @@
         <div class="q-gutter-md row items-start s-input q-ml-sm">
           <q-input class="text-h6" outlined v-model="search.filterData" placeholder="Search Employee" dense
             hint="(Employee No / Last Name / First Name / Department / Position)" lazy-rules
-            :rules="[val => val && val.length > 0 || 'This is required']" debounce="300" />
+            :rules="[val => val && val.length > 0 || 'This is required']" maxlength="30">
+            <template v-slot:prepend>
+              <q-icon name="search" />
+            </template>
+            <template v-slot:append>
+              <q-icon name="close" @click="search.filterData = ''" class="cursor-pointer" />
+            </template>
+          </q-input>
+
         </div>
         <br>
         <q-btn class="q-mr-md s-btn" label="Submit" type="submit" color="primary" :disable="disabled" />
@@ -23,9 +31,8 @@
     <q-separator />
   </div>
 
-  <div class="q-ml-lg q-pa-md" v-if="searchedEmployees.length >= 1">Filter Count: <b>{{ searchedEmployees.length
-  }}
-      <q-btn class="q-ml-lg" color="primary" label="Tabular View" @click="viewTableModal" />
+  <div class="q-pa-lg" v-if="searchedEmployees.length >= 1">Filter Count: <b>{{ searchedEmployees.length }}
+      <q-btn class="q-ml-lg" color="primary" icon="table_view" label="Table View" @click="viewTableModal" />
     </b>
     <div class="q-gutter-md row items-start s-input">
       <q-input outlined placeholder="Employee Class" v-model="employee_class" @keyup="filterClass" dense />
