@@ -1,9 +1,16 @@
 import axios from "axios";
+import { date } from 'quasar'
+
 
 export async function getSearchedEmployees(context, payload) {
   try {
     const response = await axios.get(`${this.state.activeEmployees.apiUrl}/search_employees?searchData=${payload.filterData}`)
     let activeEmployees = response.data.filter(activeEmployee => activeEmployee.IS_ACTIVE)
+    for (const item of activeEmployees) {
+      const dateToday = new Date().toISOString().slice(0, 10);
+      const unit = 'years'
+      item['SERVICE YEARS'] = date.getDateDiff(dateToday, item.HIRED, unit)
+    }
     context.commit('setSearchedEmployees', activeEmployees)
     return response
   } catch (err) {
@@ -13,7 +20,7 @@ export async function getSearchedEmployees(context, payload) {
 }
 export async function getSearchedEmployeeDetails(context, payload) {
   try {
-    const response = await axios.get(`${this.state.activeEmployees.apiUrl}/search_employees`, payload)
+    const response = await axios.get(`${this.state.activeEmployees.apiUrl}/search_employee_details?campus=${payload.campus}`)
     context.commit('setEmployeeDetails', response.data)
     return response
   } catch (err) {
@@ -23,7 +30,7 @@ export async function getSearchedEmployeeDetails(context, payload) {
 }
 export async function getDepartment(context, payload) {
   try {
-    const response = await axios.post(`${this.state.activeEmployees.apiUrl}/get_department`)
+    const response = await axios.get(`${this.state.activeEmployees.apiUrl}/department`)
     const getDept = response.data.map(element => element.description);
     getDept.unshift('')
     context.commit('setDepartment', getDept)
@@ -36,7 +43,7 @@ export async function getDepartment(context, payload) {
 }
 export async function getPositions(context, payload) {
   try {
-    const response = await axios.get(`${this.state.activeEmployees.apiUrl}/get_positions`)
+    const response = await axios.get(`${this.state.activeEmployees.apiUrl}/positions`)
     const getPosition = response.data.map(element => element.Position);
     getPosition.unshift('')
     context.commit('setPositions', getPosition)
@@ -49,7 +56,7 @@ export async function getPositions(context, payload) {
 }
 export async function getEmployeeStatus(context, payload) {
   try {
-    const response = await axios.get(`${this.state.activeEmployees.apiUrl}/search_employeesget_employee_status`)
+    const response = await axios.get(`${this.state.activeEmployees.apiUrl}/employee_status`)
     const getStatus = response.data.map(element => element.DESCRIPTION);
     getStatus.unshift('')
     context.commit('setEmployeeStatus', getStatus)
@@ -62,7 +69,7 @@ export async function getEmployeeStatus(context, payload) {
 }
 export async function getEmployeeClass(context, payload) {
   try {
-    const response = await axios.get(`${this.state.activeEmployees.apiUrl}/search_employeesget_employee_class`)
+    const response = await axios.get(`${this.state.activeEmployees.apiUrl}/employee_class`)
     const getClass = response.data.map(element => element.DESCRIPTION.trim());
     getClass.unshift('')
     context.commit('setEmployeeClass', getClass)

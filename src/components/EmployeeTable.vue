@@ -7,13 +7,7 @@
   </q-banner>
   <div class="q-pa-md">
     <div class="q-pa-sm">
-      <q-form v-if="!pageStatus" @submit="submitFilter" class="q-gutter-md" ref="form">
-        <div class="q-gutter-md row items-start s-input q-ml-sm">
-          <q-select outlined v-model="search.campus" :options="campus" label="Campus" hint="Campus" lazy-rules
-            :rules="[val => val && val.length > 0 || 'This is required']" dense />
-        </div>
-        <q-btn class="q-mr-md s-btn" label="Submit" type="submit" color="primary" />
-      </q-form>
+      <q-btn to="/" class="q-mr-md s-btn" label="Back" color="primary" />
     </div>
     <q-separator />
   </div>
@@ -135,40 +129,14 @@ export default defineComponent({
     })
   },
   created() {
-    this.getDepartment()
-    this.getPositions()
-    this.getEmployeeStatus()
-    this.getEmployeeClass()
+    this.getDetails()
   },
 
   methods: {
+    async getDetails() {
+      this.resultEmployees = this.searchedEmployees
+    },
 
-    async getDepartment() {
-      return await this.$store.dispatch('activeEmployees/getDepartment')
-    },
-    async getPositions() {
-      return await this.$store.dispatch('activeEmployees/getPositions')
-    },
-    async getEmployeeStatus() {
-      return await this.$store.dispatch('activeEmployees/getEmployeeStatus')
-    },
-    async getEmployeeClass() {
-      return await this.$store.dispatch('activeEmployees/getEmployeeClass')
-    },
-    async submitFilter() {
-      this.visible = true
-      this.resultEmployees = ''
-      let data = {
-        campus: this.search.campus === 'UE Caloocan' ? '1' : this.search.campus === 'UE Manila' ? '0' : '2',
-      }
-
-      const result = await this.$store.dispatch('activeEmployees/getSearchedEmployeeDetails', data)
-      setTimeout(() => {
-        this.resultEmployees = this.employeeDetails
-        result.data.length <= 0 ? this.filterAlert = true : false
-        this.visible = false
-      }, 1000)
-    },
     wrapCsvValue(val, formatFn, row) {
       let formatted = formatFn !== void 0
         ? formatFn(val, row)

@@ -20,25 +20,25 @@
                   <div class="col-md-3">
                     <b>FIRST NAME</b>
                     <div>
-                      <q-label class="n-label">{{ vData.FIRSTNAME }}</q-label>
+                      {{ vData.FIRSTNAME }}
                     </div>
                   </div>
                   <div class="col-md-3">
                     <b>MIDDLE NAME</b>
                     <div>
-                      <q-label class="n-label">{{ vData.MIDDLENAME }}</q-label>
+                      {{ vData.MIDDLENAME }}
                     </div>
                   </div>
                   <div class="col-md-3">
                     <b>LAST NAME</b>
                     <div>
-                      <q-label class="n-label">{{ vData.LASTNAME }}</q-label>
+                      {{ vData.LASTNAME }}
                     </div>
                   </div>
                   <div class="col-md-3">
                     <b>GENDER</b>
                     <div>
-                      <q-label class="n-label">{{ vData.GENDER === 'M' ? 'MALE' : 'FEMALE' }}</q-label>
+                      {{ vData.GENDER === 'M' ? 'MALE' : 'FEMALE' }}
                     </div>
                   </div>
                 </div>
@@ -46,25 +46,25 @@
                   <div class="col-md-3">
                     <b>BIRTH DATE</b>
                     <div>
-                      <q-label class="n-label">{{ moment(vData.BDATE).format('MMMM d, YYYY') }}</q-label>
+                      {{ moment(vData.BDATE).format('MMMM d, YYYY') }}
                     </div>
                   </div>
                   <div class="col-md-3">
                     <b>AGE</b>
                     <div>
-                      <q-label class="n-label">{{ vData.AGE }}</q-label>
+                      {{ vData.AGE }}
                     </div>
                   </div>
                   <div class="col-md-3">
                     <b>CITIZENSHIP</b>
                     <div>
-                      <q-label class="n-label">{{ vData.CITIZEN_DESC }}</q-label>
+                      {{ vData.CITIZEN_DESC }}
                     </div>
                   </div>
                   <div class="col-md-3">
                     <b>RELIGION</b>
                     <div>
-                      <q-label class="n-label">{{ vData.RELIGION_DESC }}</q-label>
+                      {{ vData.RELIGION_DESC }}
                     </div>
                   </div>
 
@@ -74,25 +74,25 @@
                   <div class="col-md-3">
                     <b>EMAIL</b>
                     <div>
-                      <q-label class="n-label">{{ vData.EMAIL }}</q-label>
+                      {{ vData.EMAIL }}
                     </div>
                   </div>
                   <div class="col-md-3">
                     <b>MIDDLE NAME</b>
                     <div>
-                      <q-label class="n-label">{{ vData.MIDDLENAME }}</q-label>
+                      {{ vData.MIDDLENAME }}
                     </div>
                   </div>
                   <div class="col-md-3">
                     <b>ADDRESS</b>
                     <div>
-                      <q-label class="n-label">{{ vData.ADDRESS }}</q-label>
+                      {{ vData.ADDRESS }}
                     </div>
                   </div>
                   <div class="col-md-3">
                     <b>MOBILE NO.</b>
                     <div>
-                      <q-label class="n-label">{{ vData.MOBILENO }}</q-label>
+                      {{ vData.MOBILENO }}
                     </div>
                   </div>
                 </div>
@@ -103,25 +103,25 @@
                   <div class="col-md-3">
                     <b>DEPARTMENT</b>
                     <div>
-                      <q-label class="n-label">{{ vData.DEPT_DESC }}</q-label>
+                      {{ vData.DEPT_DESC }}
                     </div>
                   </div>
                   <div class="col-md-3">
                     <b>POSITION</b>
                     <div>
-                      <q-label class="n-label">{{ vData.POS_DESC }}</q-label>
+                      {{ vData.POS_DESC }}
                     </div>
                   </div>
                   <div class="col-md-3">
                     <b>HIRED</b>
                     <div>
-                      <q-label class="n-label">{{ moment(vData.HIRED).format('MMMM d, YYYY') }}</q-label>
+                      {{ moment(vData.HIRED).format('MMMM d, YYYY') }}
                     </div>
                   </div>
                   <div class="col-md-3">
                     <b>REGULARIZED</b>
                     <div>
-                      <q-label class="n-label">{{ moment(vData.REGULARIZED).format('MMMM d, YYYY') }}</q-label>
+                      {{ moment(vData.REGULARIZED).format('MMMM d, YYYY') }}
                     </div>
                   </div>
                 </div>
@@ -130,19 +130,19 @@
                   <div class="col-md-3">
                     <b>EMPLOYEE CLASS</b>
                     <div>
-                      <q-label class="n-label">{{ vData.DEPT_DESC }}</q-label>
+                      {{ vData.DEPT_DESC }}
                     </div>
                   </div>
                   <div class="col-md-3">
                     <b>EMPLOYEE STATUS</b>
                     <div>
-                      <q-label class="n-label">{{ vData.POS_DESC }}</q-label>
+                      {{ vData.POS_DESC }}
                     </div>
                   </div>
                   <div class="col-md-3">
                     <b>SERVICE YEARS</b>
                     <div>
-                      <q-label class="n-label">{{ vData['SERVICE YEARS'] }}</q-label>
+                      {{ vData['SERVICE YEARS'] }}
                     </div>
                   </div>
                 </div>
@@ -160,25 +160,25 @@
                   <div class="col-md-3">
                     <b>POSITION</b>
                     <div>
-                      <q-label class="n-label">{{ vData.POS_DESC }}</q-label>
+                      {{ vData.POS_DESC }}
                     </div>
                   </div>
                   <div class="col-md-3">
                     <b>DEPARTMENT</b>
                     <div>
-                      <q-label class="n-label">{{ vData.DEPT_DESC }}</q-label>
+                      {{ vData.DEPT_DESC }}
                     </div>
                   </div>
                   <div class="col-md-3">
                     <b>FROM</b>
                     <div>
-                      <q-label class="n-label">{{ moment(vData.HIRED).format('MMMM d, YYYY') }}</q-label>
+                      {{ moment(vData.HIRED).format('MMMM d, YYYY') }}
                     </div>
                   </div>
                   <div class="col-md-3">
                     <b>TO</b>
                     <div>
-                      <q-label class="n-label">{{ moment(vData.REGULARIZED).format('MMMM d, YYYY') }}</q-label>
+                      {{ moment(vData.REGULARIZED).format('MMMM d, YYYY') }}
                     </div>
                   </div>
                 </div>
@@ -196,7 +196,6 @@
 <script>
 import { defineComponent, ref } from 'vue'
 import moment from 'moment'
-import { date } from 'quasar'
 
 export default defineComponent({
   name: 'ViewEmployeeModal',
@@ -207,6 +206,10 @@ export default defineComponent({
     }
   },
   props: ['vData', 'fModal'],
+
+  crated() {
+    this.seedate()
+  },
 
   methods: {
     close() {

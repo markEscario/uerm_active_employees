@@ -10,8 +10,8 @@
     <div class="q-pa-sm">
       <q-form v-if="!pageStatus" @submit="submitFilter" class="q-gutter-md" ref="form">
         <div class="q-gutter-md row items-start s-input q-ml-sm">
-          <q-input class="text-h6" outlined v-model="search.filterData" placeholder="Search" dense
-            hint="Ex. Employee No / Last Name / First Name / Department / Position" lazy-rules
+          <q-input class="text-h6" outlined v-model="search.filterData" placeholder="Search Employee" dense
+            hint="(Employee No / Last Name / First Name / Department / Position)" lazy-rules
             :rules="[val => val && val.length > 0 || 'This is required']" debounce="300" />
         </div>
         <br>
@@ -20,13 +20,16 @@
     </div>
     <q-separator />
   </div>
-  <div class="q-ml-lg q-pa-md" v-if="searchedEmployees.length >= 5">Filter: <b>{{ searchedEmployees.length
-  }}</b>
+
+  <div class="q-ml-lg q-pa-md" v-if="searchedEmployees.length >= 1">Filter Count: <b>{{ searchedEmployees.length
+  }}
+      <q-btn to="/employee_details" class="q-ml-lg" color="primary" label="Tabular View" />
+    </b>
     <div class="q-gutter-md row items-start s-input">
-      <q-input outlined placeholder="Employee Class" v-model="employee_class" @keyup="filterClass" />
-      <q-input outlined placeholder="Department" v-model="department" @keyup="filterDepartment" />
-      <q-input outlined placeholder="Position" v-model="employee_position" @keyup="filterPosition" />
-      <q-input outlined placeholder="Status" v-model="employee_status" @keyup="filterStatus" />
+      <q-input outlined placeholder="Employee Class" v-model="employee_class" @keyup="filterClass" dense />
+      <q-input outlined placeholder="Department" v-model="department" @keyup="filterDepartment" dense />
+      <q-input outlined placeholder="Position" v-model="employee_position" @keyup="filterPosition" dense />
+      <q-input outlined placeholder="Status" v-model="employee_status" @keyup="filterStatus" dense />
     </div>
   </div>
 
@@ -97,7 +100,7 @@
   </q-dialog>
   <div v-if="searchedEmployees.length >= 5" class="q-pa-lg flex flex-center">
     <q-pagination v-model="page" :min="currentPage" :max="Math.ceil(resultEmployees.length / totalPages)" :input="true"
-      input-class="text-orange-10" />
+      input-class="text-orange-10" size="2em" />
   </div>
 </template>
 
@@ -110,7 +113,7 @@ import ViewEmployeeModal from '../components/ViewEmployeeModal.vue'
 export default defineComponent({
   name: 'ActiveEmployees',
   components: {
-    ViewEmployeeModal
+    ViewEmployeeModal,
   },
   setup() {
     const $q = useQuasar()
@@ -172,7 +175,6 @@ export default defineComponent({
       let data = {
         filterData: this.search.filterData,
       }
-      console.log('search: ', data.filterData)
       const result = await this.$store.dispatch('activeEmployees/getSearchedEmployees', data)
       result.status === 200 ?
         setTimeout(() => {
