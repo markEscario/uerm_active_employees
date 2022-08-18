@@ -10,9 +10,6 @@ export function setSearchedEmployees(state, searchedEmployees) {
 export function setResultForStateFilter(state, resultForStateFilter) {
   state.resultForStateFilter = resultForStateFilter
 }
-export function setPageStatus(state, pageStatus) {
-  state.pageStatus = pageStatus
-}
 export function setSearchStatus(state, searchStatus) {
   state.searchStatus = searchStatus
 }

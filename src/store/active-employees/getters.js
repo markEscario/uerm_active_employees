@@ -10,9 +10,6 @@ export function searchedEmployees(state) {
 export function resultForStateFilter(state) {
   return state.resultForStateFilter
 }
-export function pageStatus(state) {
-  return state.pageStatus
-}
 export function searchStatus(state) {
   return state.searchStatus
 }

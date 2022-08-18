@@ -13,7 +13,7 @@
       <q-form v-if="!pageStatus" class="q-gutter-md" ref="form">
         <div class="q-gutter-md row items-start s-input q-ml-sm">
           <q-input class="text-h5" outlined v-model="search.filterData" @keyup="submitFilter" ref="inputRef"
-            label="Search Employee" :rules="[rule1, rule2]" max="30"
+            label="Search Employee" :rules="[rule1, rule2]"
             hint="(Employee No. / Lastname / Firstname / Department / Position / Campus)">
             <template v-slot:prepend>
               <q-icon name="search" />
@@ -158,6 +158,7 @@ export default defineComponent({
       search: {
         filterData: '',
       },
+      pageStatus: '',
       filterAlert: false,
       department: '',
       employee_name: '',
@@ -181,7 +182,6 @@ export default defineComponent({
   computed: {
     ...mapGetters({
       employees: 'activeEmployees/employees',
-      pageStatus: 'activeEmployees/pageStatus',
       searchStatus: 'activeEmployees/searchStatus',
       searchedEmployees: 'activeEmployees/searchedEmployees'
     }),
@@ -209,7 +209,7 @@ export default defineComponent({
             result.data.length <= 0 ? this.filterAlert = true : false
             this.visible = false
           }, 1000)
-          : this.searchStatus
+          : this.pageStatus = 'API ERROR'
       }
     },
 
@@ -245,24 +245,6 @@ export default defineComponent({
 <style scoped>
 .q-input {
   width: 20em;
-}
-
-.q-select {
-  width: 20em;
-}
-
-/* .s-input {
-  margin-top: 20px;
-  margin-left: 1px;
-} */
-
-.dept-label {
-  font-size: 12px;
-  margin-top: -34px;
-}
-
-.code-label {
-  font-size: 14px;
 }
 
 img {
