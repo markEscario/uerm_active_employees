@@ -81,11 +81,6 @@ module.exports = configure(function (ctx) {
 
     },
 
-    env: {
-      API: process.env.API_URL
-    },
-
-
     // Full list of options: https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js#Property%3A-devServer
     devServer: {
       server: {

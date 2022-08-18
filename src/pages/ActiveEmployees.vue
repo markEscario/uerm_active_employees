@@ -135,14 +135,14 @@ export default defineComponent({
         return new Promise((resolve, reject) => {
           setTimeout(() => {
             resolve(!!val || '* Required')
-          }, 1000)
+          }, 300)
         })
       },
       rule2(val) {
         return new Promise((resolve, reject) => {
           setTimeout(() => {
             resolve(val.length > 1 || 'Sorry, Minimum is 2 Letters')
-          }, 1000)
+          }, 300)
         })
       },
     }
@@ -208,7 +208,7 @@ export default defineComponent({
             this.resultEmployees = this.searchedEmployees
             result.data.length <= 0 ? this.filterAlert = true : false
             this.visible = false
-          }, 1000)
+          }, 500)
           : this.pageStatus = 'API ERROR'
       }
     },
