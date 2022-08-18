@@ -12,9 +12,9 @@
     <div class="q-pa-sm">
       <q-form v-if="!pageStatus" class="q-gutter-md" ref="form">
         <div class="q-gutter-md row items-start s-input q-ml-sm">
-          <q-input class="text-h6" outlined v-model="search.filterData" @keyup="submitFilter" ref="inputRef"
+          <q-input class="text-h5" outlined v-model="search.filterData" @keyup="submitFilter" ref="inputRef"
             label="Search Employee" :rules="[rule1, rule2]" max="30"
-            hint="(Employee No. / Lastname / Firstname / Department / Position)">
+            hint="(Employee No. / Lastname / Firstname / Department / Position / Campus)">
             <template v-slot:prepend>
               <q-icon name="search" />
             </template>
@@ -31,11 +31,8 @@
   <div class="q-pa-lg" v-if="searchedEmployees.length >= 1">Filter Count: <b>{{ searchedEmployees.length }}
       <q-btn class="q-ml-lg" color="primary" icon="table_view" label="Table View" @click="viewTableModal" />
     </b>
-    <div class="q-gutter-md row items-start s-input" v-if="searchedEmployees.length >= 20">
-      <q-input outlined placeholder="Employee Class" v-model="employee_class" @keyup="filterClass" dense />
-      <q-input outlined placeholder="Department" v-model="department" @keyup="filterDepartment" dense />
-      <q-input outlined placeholder="Position" v-model="employee_position" @keyup="filterPosition" dense />
-      <q-input outlined placeholder="Status" v-model="employee_status" @keyup="filterStatus" dense />
+    <div class="q-gutter-md row q-mt-sm" v-if="searchedEmployees.length >= 30">
+      <q-input class="text-h5" outlined label="Employee Name" v-model="employee_name" @keyup="filterEmployeeName" />
     </div>
   </div>
 
@@ -163,7 +160,7 @@ export default defineComponent({
       },
       filterAlert: false,
       department: '',
-      employee_class: '',
+      employee_name: '',
       employee_position: '',
       employee_status: '',
       title: '',
@@ -230,49 +227,16 @@ export default defineComponent({
       this.table_modal = false
     },
 
-    filterClass() {
-      if (this.employee_class === '') {
+    filterEmployeeName() {
+      if (this.employee_name === '') {
         this.resultEmployees = this.searchedEmployees
       } else {
         this.resultEmployees = this.resultEmployees
-          .filter(resultEmployee => typeof resultEmployee.EMP_CLASS_DESC === 'string' ?
-            resultEmployee.EMP_CLASS_DESC.toLowerCase().includes(this.employee_class.toLowerCase()) :
+          .filter(resultEmployee => typeof resultEmployee.NAME === 'string' ?
+            resultEmployee.NAME.replace(/,/g, '').toLowerCase().includes(this.employee_name.toLowerCase()) :
             this.resultEmployees = this.searchedEmployee)
       }
-    },
-
-    filterDepartment() {
-      if (this.department === '') {
-        this.resultEmployees = this.searchedEmployees
-      } else {
-        this.resultEmployees = this.resultEmployees
-          .filter(resultEmployee => typeof resultEmployee.DEPT_DESC === 'string' ?
-            resultEmployee.DEPT_DESC.toLowerCase().includes(this.department.toLowerCase()) :
-            this.resultEmployees = this.searchedEmployees)
-      }
-    },
-
-    filterPosition() {
-      if (this.employee_position === '') {
-        this.resultEmployees = this.searchedEmployees
-      } else {
-        this.resultEmployees = this.resultEmployees
-          .filter(resultEmployee => typeof resultEmployee.POS_DESC === 'string' ?
-            resultEmployee.POS_DESC.toLowerCase().includes(this.employee_position.toLowerCase()) :
-            this.resultEmployees = this.searchedEmployee)
-      }
-    },
-
-    filterStatus() {
-      if (this.employee_status === '') {
-        this.resultEmployees = this.searchedEmployees
-      } else {
-        this.resultEmployees = this.resultEmployees
-          .filter(resultEmployee => typeof resultEmployee.EMP_STATUS_DESC === 'string' ?
-            resultEmployee.EMP_STATUS_DESC.toLowerCase().includes(this.employee_status.toLowerCase()) :
-            this.resultEmployees = this.searchedEmployee)
-      }
-    },
+    }
 
   }
 })
@@ -287,10 +251,10 @@ export default defineComponent({
   width: 20em;
 }
 
-.s-input {
+/* .s-input {
   margin-top: 20px;
   margin-left: 1px;
-}
+} */
 
 .dept-label {
   font-size: 12px;
