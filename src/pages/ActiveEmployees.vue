@@ -10,11 +10,11 @@
     @hide="closeDialog" />
   <div class="q-pa-md">
     <div class="q-pa-sm">
-      <q-form v-if="!pageStatus" @submit="submitFilter" class="q-gutter-md" ref="form">
+      <q-form v-if="!pageStatus" class="q-gutter-md" ref="form">
         <div class="q-gutter-md row items-start s-input q-ml-sm">
-          <q-input class="text-h6" outlined v-model="search.filterData" placeholder="Search Employee" dense
-            hint="(Employee No / Last Name / First Name / Department / Position)" lazy-rules
-            :rules="[val => val && val.length > 0 || 'This is required']" maxlength="30">
+          <q-input class="text-h6" outlined v-model="search.filterData" @keyup="submitFilter" ref="inputRef"
+            label="Search Employee" :rules="[rule1, rule2]" max="30"
+            hint="(Employee No. / Lastname / Firstname / Department / Position)">
             <template v-slot:prepend>
               <q-icon name="search" />
             </template>
@@ -22,10 +22,7 @@
               <q-icon name="close" @click="search.filterData = ''" class="cursor-pointer" />
             </template>
           </q-input>
-
         </div>
-        <br>
-        <q-btn class="q-mr-md s-btn" label="Submit" type="submit" color="primary" :disable="disabled" />
       </q-form>
     </div>
     <q-separator />
@@ -34,7 +31,7 @@
   <div class="q-pa-lg" v-if="searchedEmployees.length >= 1">Filter Count: <b>{{ searchedEmployees.length }}
       <q-btn class="q-ml-lg" color="primary" icon="table_view" label="Table View" @click="viewTableModal" />
     </b>
-    <div class="q-gutter-md row items-start s-input">
+    <div class="q-gutter-md row items-start s-input" v-if="searchedEmployees.length >= 20">
       <q-input outlined placeholder="Employee Class" v-model="employee_class" @keyup="filterClass" dense />
       <q-input outlined placeholder="Department" v-model="department" @keyup="filterDepartment" dense />
       <q-input outlined placeholder="Position" v-model="employee_position" @keyup="filterPosition" dense />
@@ -130,12 +127,27 @@ export default defineComponent({
   },
   setup() {
     const $q = useQuasar()
+    const inputRef = ref(null)
     return {
       filter: ref(''),
+      inputRef,
       tab: ref('mails'),
-      model: ref(null),
       active: ref(true),
-      visible: ref(false)
+      visible: ref(false),
+      rule1(val) {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            resolve(!!val || '* Required')
+          }, 1000)
+        })
+      },
+      rule2(val) {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            resolve(val.length > 1 || 'Sorry, Minimum is 2 Letters')
+          }, 1000)
+        })
+      },
     }
   },
   data() {
@@ -159,7 +171,7 @@ export default defineComponent({
       loading: false,
       resultEmployees: [],
       resultEmps: {},
-      disabled: false,
+      btn: false,
       medium: false,
       table_modal: false,
       page: 1,
@@ -183,22 +195,25 @@ export default defineComponent({
   },
   methods: {
     async submitFilter() {
-      this.disabled = true
-      this.visible = true
+      this.btn = true
+
       this.resultEmployees = ''
       let data = {
         filterData: this.search.filterData,
       }
-      const result = await this.$store.dispatch('activeEmployees/getSearchedEmployees', data)
-      result.status === 200 ?
-        setTimeout(() => {
-          this.disabled = false
+      if (data.filterData.length >= 2) {
+        this.visible = true
+        const result = await this.$store.dispatch('activeEmployees/getSearchedEmployees', data)
+        result.status === 200 ?
+          setTimeout(() => {
+            this.disabled = false
 
-          this.resultEmployees = this.searchedEmployees
-          result.data.length <= null ? this.filterAlert = true : false
-          this.visible = false
-        }, 1000)
-        : this.searchStatus
+            this.resultEmployees = this.searchedEmployees
+            result.data.length <= 0 ? this.filterAlert = true : false
+            this.visible = false
+          }, 1000)
+          : this.searchStatus
+      }
     },
 
     viewProfile(profile) {

@@ -1,6 +1,6 @@
 <template>
   <q-dialog v-if="fModal" :model-value="true">
-    <q-card style="width: 1200px; max-width: 180vw;">
+    <q-card style="width: 1500px; max-width: 380vw;">
       <div class="row flex flex-center">
         <div class="q-pa-md" style="width: 1950px">
           <q-toolbar class="bg-primary text-white shadow-2">
