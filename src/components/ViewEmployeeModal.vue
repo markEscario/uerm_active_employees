@@ -145,6 +145,12 @@
                       {{ vData['SERVICE YEARS'] }}
                     </div>
                   </div>
+                  <div class="col-md-3">
+                    <b>DEGREE</b>
+                    <div>
+                      {{ vData.DiplomaDegreeHonor }}
+                    </div>
+                  </div>
                 </div>
               </q-item-section>
 
