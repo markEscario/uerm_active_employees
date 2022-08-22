@@ -20,7 +20,8 @@ export async function getSearchedEmployees(context, payload) {
 }
 export async function getSearchedEmployeeDetails(context, payload) {
   try {
-    const response = await axios.get(`${this.state.activeEmployees.apiUrl}/search_employee_details?campus=${payload.campus}`)
+    let getString = `campus=${payload.campus}&gender=${payload.gender}&department=${payload.department}&position=${payload.position}`;
+    const response = await axios.get(`${this.state.activeEmployees.apiUrl}/search_employee_details?${getString}`)
     context.commit('setEmployeeDetails', response.data)
     return response
   } catch (err) {

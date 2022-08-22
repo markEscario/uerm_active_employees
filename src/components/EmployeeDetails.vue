@@ -10,7 +10,7 @@
       <q-form v-if="!pageStatus" @submit="submitFilter" class="q-gutter-md" ref="form">
         <div class="q-gutter-md row items-start s-input q-ml-sm">
           <q-select outlined v-model="search.campus" :options="campus" label="Campus" hint="Campus" lazy-rules
-            :rules="[val => val && val.length > 0 || 'This is required']" dense />
+            :rules="[val => val && val.length > 0 || 'This is required']" />
         </div>
         <q-btn class="q-mr-md s-btn" label="Submit" type="submit" color="primary" />
       </q-form>

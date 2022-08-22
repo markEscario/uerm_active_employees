@@ -7,7 +7,17 @@
   </q-banner>
   <div class="q-pa-md">
     <div class="q-pa-sm">
-      <q-btn to="/" class="q-mr-md s-btn" label="Back" color="primary" />
+      <q-form v-if="!pageStatus" @submit="submitFilter" class="q-gutter-md" ref="form">
+        <div class="q-gutter-md row items-start s-input q-ml-sm">
+          <q-select outlined v-model="search.campus" :options="campus" label="CAMPUS" hint="Campus" />
+          <q-select outlined v-model="search.gender" :options="employee_gender" label="ANY" hint="Gender" />
+          <q-select outlined v-model="search.employee_department" :options="department" class="text-h5" label="ANY"
+            hint="Department" />
+          <q-select outlined v-model="search.employee_position" :options="positions" class="text-h6" label="ANY"
+            hint="Position" />
+        </div>
+        <q-btn class="q-mr-md s-btn" label="Submit" type="submit" color="primary" />
+      </q-form>
     </div>
     <q-separator />
   </div>
@@ -92,18 +102,22 @@ export default defineComponent({
     return {
       search: {
         campus: '',
+        gender: '',
+        employee_department: '',
+        employee_position: ''
       },
       campus: [
         '',
-        'UE Caloocan',
+        'UERM',
         'UE Manila',
-        'UERM'
+        'UE Caloocan'
       ],
       employee_gender: [
         ' ',
         'MALE',
         'FEMALE'
       ],
+      pageStatus: '',
       filterAlert: false,
       searchStatus: '',
       title: '',
@@ -118,7 +132,6 @@ export default defineComponent({
   computed: {
     ...mapGetters({
       employees: 'activeEmployees/employees',
-      pageStatus: 'activeEmployees/pageStatus',
       searchedEmployees: 'activeEmployees/searchedEmployees',
       resultForStateFilters: 'activeEmployees/resultForStateFilter',
       department: 'activeEmployees/department',
@@ -129,14 +142,43 @@ export default defineComponent({
     })
   },
   created() {
-    this.getDetails()
+    this.getDepartment()
+    this.getPositions()
+    // this.getEmployeeStatus()
+    // this.getEmployeeClass()
   },
 
   methods: {
-    async getDetails() {
-      this.resultEmployees = this.searchedEmployees
-    },
 
+    async getDepartment() {
+      return await this.$store.dispatch('activeEmployees/getDepartment')
+    },
+    async getPositions() {
+      return await this.$store.dispatch('activeEmployees/getPositions')
+    },
+    async getEmployeeStatus() {
+      return await this.$store.dispatch('activeEmployees/getEmployeeStatus')
+    },
+    async getEmployeeClass() {
+      return await this.$store.dispatch('activeEmployees/getEmployeeClass')
+    },
+    async submitFilter() {
+      this.visible = true
+      this.resultEmployees = ''
+      let data = {
+        campus: this.search.campus === 'UE Caloocan' ? '1' : this.search.campus === 'UE Manila' ? '0' : '2',
+        gender: this.search.gender,
+        department: this.search.employee_department,
+        position: this.search.employee_position
+      }
+
+      const result = await this.$store.dispatch('activeEmployees/getSearchedEmployeeDetails', data)
+      setTimeout(() => {
+        this.resultEmployees = this.employeeDetails
+        // result.data.length <= 0 ? this.filterAlert = true : false
+        this.visible = false
+      }, 1000)
+    },
     wrapCsvValue(val, formatFn, row) {
       let formatted = formatFn !== void 0
         ? formatFn(val, row)
@@ -340,6 +382,13 @@ const columns = [
     align: 'left',
     label: 'YEARS OF SERVICE',
     field: 'SERVICE YEARS',
+    sortable: true
+  },
+  {
+    name: 'ACTIVE',
+    align: 'left',
+    label: 'ACTIVE',
+    field: 'IS_ACTIVE',
     sortable: true
   },
   {
