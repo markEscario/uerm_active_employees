@@ -5,13 +5,15 @@ import { date } from 'quasar'
 export async function getSearchedEmployees(context, payload) {
   try {
     const response = await axios.get(`${this.state.activeEmployees.apiUrl}/search_employees?searchData=${payload.filterData}`)
-    let activeEmployees = response.data.filter(activeEmployee => activeEmployee.IS_ACTIVE && activeEmployee.EducType === 'G')
-    for (const item of activeEmployees) {
+    response.data = response.data.filter(activeEmployee => activeEmployee.IS_ACTIVE && activeEmployee.EducType === 'G')
+
+    for (const item of response.data) {
       const dateToday = new Date().toISOString().slice(0, 10);
       const unit = 'years'
       item['SERVICE YEARS'] = date.getDateDiff(dateToday, item.HIRED, unit)
     }
-    context.commit('setSearchedEmployees', activeEmployees)
+    context.commit('setSearchedEmployees', response.data)
+
     return response
   } catch (err) {
     console.log(err);
