@@ -158,33 +158,32 @@
 
             <q-separator />
             <q-item-label header>SERVICE RECORD</q-item-label>
-            <q-item-label class="q-ml-md">{{ vData.EMP_STATUS_DESC === 'PROBY' ? 'PROBATIONARY' : '' }}</q-item-label>
-            <q-item class="q-mb-sm">
-
+            <q-item v-for="record in vServiceRecords" :key="record">
               <q-item-section>
+                <div class="q-pa-sm">{{ record.TYPE }}</div>
                 <div class="row bg-grey-2 q-pa-sm rounded-borders row-pad">
                   <div class="col-md-3">
                     <b>POSITION</b>
                     <div>
-                      {{ vData.POS_DESC }}
+                      {{ record.Position }}
                     </div>
                   </div>
                   <div class="col-md-3">
                     <b>DEPARTMENT</b>
                     <div>
-                      {{ vData.DEPT_DESC }}
+                      {{ record.DEPT_DESC }}
                     </div>
                   </div>
                   <div class="col-md-3">
                     <b>FROM</b>
                     <div>
-                      {{ moment(vData.HIRED).format('MMMM d, YYYY') }}
+                      {{ moment(record.DATE_FROM).format('MMMM d, YYYY') }}
                     </div>
                   </div>
                   <div class="col-md-3">
                     <b>TO</b>
                     <div>
-                      {{ moment(vData.REGULARIZED).format('MMMM d, YYYY') }}
+                      {{ moment(record.DATE_TO).format('MMMM d, YYYY') }}
                     </div>
                   </div>
                 </div>
@@ -194,7 +193,7 @@
         </div>
       </div>
       <q-card-actions align="right" class="bg-white text-teal">
-        <q-btn flat label="Close" @click="close" v-close-popup />
+        <q-btn color="primary" label="Close" @click="close" v-close-popup />
       </q-card-actions>
     </q-card>
   </q-dialog>
@@ -211,8 +210,7 @@ export default defineComponent({
       resultEmps: {},
     }
   },
-  props: ['vData', 'fModal'],
-
+  props: ['vData', 'vServiceRecords', 'fModal'],
   methods: {
     close() {
       this.$emit('close')

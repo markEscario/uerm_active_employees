@@ -6,6 +6,7 @@ export default function () {
     searchStatus: '',
     employeeProfile: {},
     employees: [],
+    serviceRecords: [],
     searchedEmployees: [],
     resultForStateFilter: [],
     department: [],

@@ -1,6 +1,9 @@
 export function employees(state) {
   return state.employees
 }
+export function serviceRecords(state) {
+  return state.serviceRecords
+}
 export function employeeProfile(state) {
   return state.employeeProfile
 }

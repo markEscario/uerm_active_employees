@@ -1,6 +1,9 @@
 export function setEmployees(state, employees) {
   state.employees = employees
 }
+export function setServiceRecords(state, serviceRecords) {
+  state.serviceRecords = serviceRecords
+}
 export function setEmployeeProfile(state, employeeProfile) {
   state.employeeProfile = employeeProfile
 }

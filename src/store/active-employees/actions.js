@@ -5,7 +5,7 @@ import { date } from 'quasar'
 export async function getSearchedEmployees(context, payload) {
   try {
     const response = await axios.get(`${this.state.activeEmployees.apiUrl}/search_employees?searchData=${payload.filterData}`)
-    response.data = response.data.filter(activeEmployee => activeEmployee.IS_ACTIVE && activeEmployee.EducType === 'G')
+    response.data = response.data.filter(activeEmployee => activeEmployee.EducType === 'G')
     for (const item of response.data) {
       const dateToday = new Date().toISOString().slice(0, 10);
       const unit = 'years'
@@ -19,11 +19,10 @@ export async function getSearchedEmployees(context, payload) {
     return err
   }
 }
-export async function getSearchedEmployeeDetails(context, payload) {
+export async function getEmployeeServiceRecords(context, payload) {
   try {
-    let getString = `campus=${payload.campus}&gender=${payload.gender}&department=${payload.department}&position=${payload.position}`;
-    const response = await axios.get(`${this.state.activeEmployees.apiUrl}/search_employee_details?${getString}`)
-    context.commit('setEmployeeDetails', response.data)
+    const response = await axios.get(`${this.state.activeEmployees.apiUrl}/employee_service_records?employeeCode=${payload.employeeCode}`)
+    context.commit('setServiceRecords', response.data)
     return response
   } catch (err) {
     console.log(err);
