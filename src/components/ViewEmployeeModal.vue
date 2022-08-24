@@ -183,7 +183,7 @@
                   <div class="col-md-3">
                     <b>TO</b>
                     <div>
-                      {{ moment(record.DATE_TO).format('MMMM d, YYYY') }}
+                      {{ record.DATE_TO ? moment(record.DATE_TO).format('MMMM d, YYYY') : 'NO DATE FOUND' }}
                     </div>
                   </div>
                 </div>
