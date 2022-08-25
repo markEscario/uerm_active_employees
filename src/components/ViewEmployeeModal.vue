@@ -12,11 +12,13 @@
             <q-item class="q-my-sm">
 
               <q-avatar size="190px">
-                <img :src="'http://10.107.11.169/getpic?i=' + vData.CODE">
+                <img :src="imageUrl + vData.CODE">
               </q-avatar>
 
               <q-item-section class="q-ml-md">
-                <div class="row bg-grey-2 q-pa-sm rounded-borders row-pad">
+
+
+                <div class="row bg-grey-2 q-pa-sm rounded-borders">
                   <div class="col-md-3">
                     <b>FIRST NAME</b>
                     <div>
@@ -42,7 +44,9 @@
                     </div>
                   </div>
                 </div>
-                <div class="row bg-grey-2 q-pa-sm rounded-borders row-pad">
+
+                <q-separator />
+                <div class="row bg-grey-2 q-pa-sm rounded-borders">
                   <div class="col-md-3">
                     <b>BIRTH DATE</b>
                     <div>
@@ -67,20 +71,14 @@
                       {{ vData.RELIGION_DESC }}
                     </div>
                   </div>
-
                 </div>
+
                 <q-separator />
                 <div class="row bg-grey-2 q-pa-sm rounded-borders">
                   <div class="col-md-3">
                     <b>EMAIL</b>
                     <div>
                       {{ vData.EMAIL }}
-                    </div>
-                  </div>
-                  <div class="col-md-3">
-                    <b>MIDDLE NAME</b>
-                    <div>
-                      {{ vData.MIDDLENAME }}
                     </div>
                   </div>
                   <div class="col-md-3">
@@ -93,6 +91,12 @@
                     <b>MOBILE NO.</b>
                     <div>
                       {{ vData.MOBILENO }}
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <b>TEL NO.</b>
+                    <div>
+                      {{ vData.TELNO }}
                     </div>
                   </div>
                 </div>
@@ -201,6 +205,7 @@
 <script>
 import { defineComponent, ref } from 'vue'
 import moment from 'moment'
+import { mapGetters } from 'vuex'
 
 export default defineComponent({
   name: 'ViewEmployeeModal',
@@ -211,6 +216,11 @@ export default defineComponent({
     }
   },
   props: ['vData', 'vServiceRecords', 'fModal'],
+  computed: {
+    ...mapGetters({
+      imageUrl: 'activeEmployees/imageUrl'
+    }),
+  },
   methods: {
     close() {
       this.$emit('close')

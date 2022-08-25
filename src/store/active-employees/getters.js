@@ -13,6 +13,9 @@ export function searchedEmployees(state) {
 export function resultForStateFilter(state) {
   return state.resultForStateFilter
 }
+export function imageUrl(state) {
+  return state.imageUrl
+}
 export function searchStatus(state) {
   return state.searchStatus
 }

@@ -36,7 +36,7 @@
         <q-item class="q-my-sm">
           <q-item-section avatar>
             <q-avatar size="100px">
-              <img :src="'http://10.107.11.169/getpic?i=' + resultEmployee.CODE">
+              <img :src="imageUrl + resultEmployee.CODE">
             </q-avatar>
           </q-item-section>
           <q-item-section>
@@ -102,6 +102,7 @@ import { defineComponent, ref } from 'vue'
 import { useQuasar } from 'quasar'
 import { mapGetters } from 'vuex'
 import ViewEmployeeModal from '../components/ViewEmployeeModal.vue'
+import FILTER from '../constants'
 
 export default defineComponent({
   name: 'ActiveEmployees',
@@ -131,12 +132,6 @@ export default defineComponent({
   },
   data() {
     return {
-      campus: [
-        '',
-        'UE Caloocan',
-        'UE Manila',
-        'UERM'
-      ],
       search: {
         filterData: '',
       },
@@ -162,6 +157,7 @@ export default defineComponent({
       searchStatus: 'activeEmployees/searchStatus',
       searchedEmployees: 'activeEmployees/searchedEmployees',
       serviceRecords: 'activeEmployees/serviceRecords',
+      imageUrl: 'activeEmployees/imageUrl'
     }),
     paginateEmployees() {
       return this.resultEmployees.slice((this.page - 1) * this.totalPages, (this.page - 1) * this.totalPages + this.totalPages)
@@ -181,13 +177,12 @@ export default defineComponent({
         result.status === 200 ?
           setTimeout(() => {
             this.resultEmployees = this.searchedEmployees
-            result.data.length <= 0 ? this.filterMessage = 'SORRY, NO RECORDS FOUND. PLEASE TRY AGAIN' : ''
+            result.data.length <= 0 ? this.filterMessage = FILTER.FILTER_ERROR : ''
             this.visible = false
           }, 500)
-          : this.pageStatus = 'API CONNECTION ERROR. PLEASE CONTACT IT DEPARTMENT'
+          : this.pageStatus = FILTER.API_ERROR
       }
     },
-
     async viewProfile(profile) {
       this.medium = true;
       this.resultEmps = profile
