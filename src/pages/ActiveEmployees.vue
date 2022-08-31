@@ -21,10 +21,12 @@
     <q-separator />
   </div>
 
-  <div class="q-ml-lg" v-if="searchedEmployees.length >= 1">Filter Count: <b>{{ searchedEmployees.length }}</b>
+  <div class="q-ml-lg" v-if="searchedEmployees.length >= 1">Filter Count: <b class="text-h6">{{
+      searchedEmployees.length
+  }}</b>
   </div>
 
-  <div class="row" style="width: 1400px;">
+  <div class="row result-pos" style="width: 1400px;">
     <div class="col-md-3 q-pa-lg" v-for="resultEmployee in paginateEmployees" :key="resultEmployee">
       <q-toolbar class="bg-primary text-white shadow-2">
         <q-toolbar-title>
@@ -183,6 +185,7 @@ export default defineComponent({
           : this.pageStatus = FILTER.API_ERROR
       }
     },
+
     async viewProfile(profile) {
       this.medium = true;
       this.resultEmps = profile
@@ -204,7 +207,13 @@ export default defineComponent({
 </script>
 <style scoped>
 .q-input {
-  width: 20em;
+  width: 45em;
+}
+
+.result-pos {
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
 }
 
 img {
